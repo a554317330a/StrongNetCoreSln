@@ -5,7 +5,7 @@
     "anonymousAuthentication": true,
     "iisExpress": {
       "applicationUrl": "http://localhost:50154",
-      "sslPort": 44385
+      "sslPort": 0
     }
   },
   "profiles": {
@@ -21,10 +21,20 @@
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "weatherforecast",
-      "applicationUrl": "https://localhost:5001;http://localhost:5000",
+      "applicationUrl": "https://localhost:8818",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     }
   }
 }
+
+
+
+//sslPort：表示启用https时访问的端口地址
+//commandName：表示启动的寄宿进程名
+//launchBrowser：是否启动浏览器
+//launchUrl：启动的默认路由地址，服务启动后默认跳转路由地址
+//applicationUrl：启动的URL地址，服务启动时会引用该配置
+//ASPNETCORE_ENVIRONMENT：表示asp.net运行环境，Development表示开发环境 ASPNETCORE_ENVIRONMENT中的Development的使用主要可以用于开发模式下的一些额外处理，如异常处理。
+

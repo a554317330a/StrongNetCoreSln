@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace StrongAPI
 {
@@ -17,10 +19,23 @@ namespace StrongAPI
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
+            //Host.CreateDefaultBuilder(args)
+            //    .ConfigureWebHostDefaults(webBuilder =>
+            //    {
+            //        webBuilder.UseStartup<Startup>();
+            //    });
+
+
             Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+        .ConfigureServices((context, services) =>
+        {
+            services.Configure<KestrelServerOptions>(context.Configuration.GetSection("Kestrel"));
+        })
+        .ConfigureWebHostDefaults(webBuilder =>
+        {
+            webBuilder.UseStartup<Startup>().UseKestrel();
+        });
+
+        //Host.CreateDefaultBuilder(args).ConfigureWebHostDefaults()
     }
 }
