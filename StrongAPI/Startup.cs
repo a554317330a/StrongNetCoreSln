@@ -6,13 +6,13 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore;
-using StrongAPI.Context;
-using StrongAPI.Models;
+using Strong.Entities;
+
 namespace StrongAPI
 {
     public class Startup
@@ -28,10 +28,9 @@ namespace StrongAPI
         public void ConfigureServices(IServiceCollection services)
         {
 
+            var sqlconstr = Configuration.GetConnectionString("SqlConStr");
 
-
-
-            services.AddDbContext<TodoContext>(opt => opt.UseInMemoryDatabase("TodoList"));
+            services.AddDbContextPool<MyContext>(options => options.UseSqlServer(Configuration["ConfigOption:ConnectionString"]));
 
             services.AddControllers();
         }
