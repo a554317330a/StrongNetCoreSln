@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Strong.Entities
 {
-    public partial class TbApilog：TEntity
+    public partial class TbApilog
     {
         public int Logid { get; set; }
         public int? Errortype { get; set; }
