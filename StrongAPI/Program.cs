@@ -26,7 +26,7 @@ namespace StrongAPI
             //    });
 
 
-            Host.CreateDefaultBuilder(args)
+        Host.CreateDefaultBuilder(args)
         .ConfigureServices((context, services) =>
         {
             services.Configure<KestrelServerOptions>(context.Configuration.GetSection("Kestrel"));
