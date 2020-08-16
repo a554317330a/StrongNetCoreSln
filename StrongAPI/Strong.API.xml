@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Strong.API</name>
+    </assembly>
+    <members>
+        <member name="M:Strong.API.AuthHelper.JWTHelper.SerializeJwt(System.String)">
+            <summary>
+            解析
+            </summary>
+            <param name="jwtStr"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Strong.API.AuthHelper.TokenModelJwt">
+            <summary>
+            令牌
+            </summary>
+        </member>
+        <member name="P:Strong.API.AuthHelper.TokenModelJwt.Uid">
+            <summary>
+            Id
+            </summary>
+        </member>
+        <member name="P:Strong.API.AuthHelper.TokenModelJwt.Role">
+            <summary>
+            角色
+            </summary>
+        </member>
+        <member name="P:Strong.API.AuthHelper.TokenModelJwt.Work">
+            <summary>
+            职能
+            </summary>
+        </member>
+        <member name="T:Strong.API.Controllers.WeatherForecastController">
+            <summary>
+            测试接口
+            </summary>
+        </member>
+        <member name="M:Strong.API.Controllers.WeatherForecastController.#ctor(Microsoft.Extensions.Logging.ILogger{Strong.API.Controllers.WeatherForecastController})">
+            <summary>
+            构造函数注入日志类
+            </summary>
+            <param name="logger"></param>
+        </member>
+        <member name="M:Strong.API.Controllers.WeatherForecastController.Get">
+            <summary>
+            获取数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Strong.API.Controllers.WeatherForecastController.GetB">
+            <summary>
+            获取数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Strong.API.Controllers.WeatherForecastController.GetC">
+            <summary>
+            获取数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:StrongAPI.Program">
+            <summary>
+            程序入口
+            </summary>
+        </member>
+        <member name="M:StrongAPI.Program.Main(System.String[])">
+            <summary>
+            入口方法
+            </summary>
+            <param name="args"></param>
+        </member>
+        <member name="M:StrongAPI.Program.CreateHostBuilder(System.String[])">
+            <summary>
+            创建Web服务器
+            </summary>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
+        <member name="T:StrongAPI.Startup">
+            <summary>
+            入口配置
+            </summary>
+        </member>
+        <member name="P:StrongAPI.Startup.ApiName">
+            <summary>
+            API名称
+            </summary>
+        </member>
+        <member name="M:StrongAPI.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="configuration"></param>
+        </member>
+        <member name="P:StrongAPI.Startup.Configuration">
+            <summary>
+            配置
+            </summary>
+        </member>
+        <member name="M:StrongAPI.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            用于注册services服务（第三方，EF，identity等）到容器中，使Configure可以使用这些服务
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:StrongAPI.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            用于配置整个HTTP请求的流程
+            </summary>
+            <param name="app"></param>
+            <param name="env"></param>
+        </member>
+    </members>
+</doc>

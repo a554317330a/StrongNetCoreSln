@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace YunTuCore.IRepository
 {
-    public interface IBaseRepository<TEntity, TKey> where TEntity : class, new()
+    public interface IBaseRepository<TEntity,TKey> where TEntity : class, new()
     {
         #region 添加数据
         int Add(TEntity model);
@@ -19,14 +19,14 @@ namespace YunTuCore.IRepository
         #endregion
 
         #region 删除数据
-        bool Delete(object id);
+        bool Delete(TKey id);
         bool Delete(TEntity entity);
-        bool Delete(object[] ids);
+        bool Delete(TKey[] ids);
         bool Delete(List<TEntity> entitys);
         bool Delete(Expression<Func<TEntity, bool>> whereExpression);
-        Task<bool> DeleteAsync(object id);
+        Task<bool> DeleteAsync(TKey id);
         Task<bool> DeleteAsync(TEntity entity);
-        Task<bool> DeleteAsync(object[] ids);
+        Task<bool> DeleteAsync(TKey[] ids);
         Task<bool> DeleteAsync(List<TEntity> entitys);
         Task<bool> DeleteAsync(Expression<Func<TEntity, bool>> whereExpression);
         #endregion

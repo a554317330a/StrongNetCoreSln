@@ -11,31 +11,36 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace StrongAPI
 {
+    /// <summary>
+    /// 程序入口
+    /// </summary>
     public class Program
     {
+        /// <summary>
+        /// 入口方法
+        /// </summary>
+        /// <param name="args"></param>
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
         }
 
+        /// <summary>
+        /// 创建Web服务器
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public static IHostBuilder CreateHostBuilder(string[] args) =>
-            //Host.CreateDefaultBuilder(args)
-            //    .ConfigureWebHostDefaults(webBuilder =>
-            //    {
-            //        webBuilder.UseStartup<Startup>();
-            //    });
-
-
+        
         Host.CreateDefaultBuilder(args)
-        .ConfigureServices((context, services) =>
-        {
-            services.Configure<KestrelServerOptions>(context.Configuration.GetSection("Kestrel"));
-        })
+        //.ConfigureServices((context, services) =>
+        //{
+        //    services.Configure<KestrelServerOptions>(context.Configuration.GetSection("Kestrel"));
+        //})
         .ConfigureWebHostDefaults(webBuilder =>
         {
-            webBuilder.UseStartup<Startup>().UseKestrel();
+            webBuilder.UseStartup<Startup>().UseKestrel().UseUrls("https://*:8818");
         });
-
-        //Host.CreateDefaultBuilder(args).ConfigureWebHostDefaults()
+         
     }
 }

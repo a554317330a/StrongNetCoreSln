@@ -5,19 +5,23 @@ VisualStudioVersion = 16.0.30225.117
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Strong.API", "StrongAPI\Strong.API.csproj", "{F098F60E-871A-4325-BB01-8EB2F3E20036}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Strong.Entities", "Strong.Entities\Strong.Entities.csproj", "{B0439AB5-C122-4DFE-B678-E154F781EC67}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Strong.Entities", "Strong.Entities\Strong.Entities.csproj", "{B0439AB5-C122-4DFE-B678-E154F781EC67}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Strong.Repository", "Strong.Repository\Strong.Repository.csproj", "{7E8CFA06-0C48-44D6-920B-814C988986CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Strong.Repository", "Strong.Repository\Strong.Repository.csproj", "{7E8CFA06-0C48-44D6-920B-814C988986CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Strong.IRepository", "Strong.IRepository\Strong.IRepository.csproj", "{E9AB170F-3C23-4815-AB5B-C6F0AB62BA1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Strong.IRepository", "Strong.IRepository\Strong.IRepository.csproj", "{E9AB170F-3C23-4815-AB5B-C6F0AB62BA1B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{0CC572F1-D067-487E-8E67-E3A2BD4215FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Strong.Bussiness", "Strong.Bussiness\Strong.Bussiness.csproj", "{78ADE153-22D2-44A7-B690-D11076874DC4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Strong.Bussiness", "Strong.Bussiness\Strong.Bussiness.csproj", "{78ADE153-22D2-44A7-B690-D11076874DC4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Strong.IBussiness", "Strong.IBussiness\Strong.IBussiness.csproj", "{00A48D19-897A-43D8-A6BD-C7FA31AB0961}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Strong.IBussiness", "Strong.IBussiness\Strong.IBussiness.csproj", "{00A48D19-897A-43D8-A6BD-C7FA31AB0961}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Strong.Model", "Strong.Model\Strong.Model.csproj", "{AC24FBB8-240A-41B2-9265-0273BCAAACD2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Strong.Model", "Strong.Model\Strong.Model.csproj", "{AC24FBB8-240A-41B2-9265-0273BCAAACD2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Strong.Extensions", "Strong.Extensions\Strong.Extensions.csproj", "{9F1A28D4-0D2A-4159-9BB4-657F110C10FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Strong.Common", "Strong.Common\Strong.Common.csproj", "{396C259C-630B-4832-B16F-64726FAD448D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +57,14 @@ Global
 		{AC24FBB8-240A-41B2-9265-0273BCAAACD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC24FBB8-240A-41B2-9265-0273BCAAACD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC24FBB8-240A-41B2-9265-0273BCAAACD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F1A28D4-0D2A-4159-9BB4-657F110C10FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F1A28D4-0D2A-4159-9BB4-657F110C10FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F1A28D4-0D2A-4159-9BB4-657F110C10FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F1A28D4-0D2A-4159-9BB4-657F110C10FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{396C259C-630B-4832-B16F-64726FAD448D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{396C259C-630B-4832-B16F-64726FAD448D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{396C259C-630B-4832-B16F-64726FAD448D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{396C259C-630B-4832-B16F-64726FAD448D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,6 +76,8 @@ Global
 		{78ADE153-22D2-44A7-B690-D11076874DC4} = {0CC572F1-D067-487E-8E67-E3A2BD4215FF}
 		{00A48D19-897A-43D8-A6BD-C7FA31AB0961} = {0CC572F1-D067-487E-8E67-E3A2BD4215FF}
 		{AC24FBB8-240A-41B2-9265-0273BCAAACD2} = {0CC572F1-D067-487E-8E67-E3A2BD4215FF}
+		{9F1A28D4-0D2A-4159-9BB4-657F110C10FC} = {0CC572F1-D067-487E-8E67-E3A2BD4215FF}
+		{396C259C-630B-4832-B16F-64726FAD448D} = {0CC572F1-D067-487E-8E67-E3A2BD4215FF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A509764E-E0D8-4F70-AB29-E0FE74564014}

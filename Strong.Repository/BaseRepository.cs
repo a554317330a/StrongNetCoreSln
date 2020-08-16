@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿
 using Strong.Entities;
 using System;
 using System.Collections.Generic;
@@ -11,15 +11,14 @@ using YunTuCore.IRepository;
 
 namespace YunTuCore.Repository
 {
-    public abstract class BaseRepository<TEntity,TKey> : IBaseRepository<TEntity, TKey> where TEntity : class, new()
+    public abstract class BaseRepository<TEntity,TKey> : IBaseRepository<TEntity,TKey> where TEntity : class, new()
     {
-        private readonly DbSet<TEntity> _dbSet;
-        public MyContext _Db { get; } = null;
+        public SqlSugarClient  _Db { get; } = null;
 
-        public BaseRepository(MyContext Db) 
+        public BaseRepository(SqlSugarClient Db) 
         {
             _Db = Db ?? throw new ArgumentNullException(nameof(MyContext));
-            _dbSet = _Db.Set<TEntity>();
+
         }
 
         public int Add(TEntity model)
@@ -52,7 +51,7 @@ namespace YunTuCore.Repository
             throw new NotImplementedException();
         }
 
-        public bool Delete(object id)
+        public bool Delete(TKey id)
         {
             throw new NotImplementedException();
         }
@@ -62,7 +61,7 @@ namespace YunTuCore.Repository
             throw new NotImplementedException();
         }
 
-        public bool Delete(object[] ids)
+        public bool Delete(TKey[] ids)
         {
             throw new NotImplementedException();
         }
@@ -77,7 +76,7 @@ namespace YunTuCore.Repository
             throw new NotImplementedException();
         }
 
-        public Task<bool> DeleteAsync(object id)
+        public Task<bool> DeleteAsync(TKey id)
         {
             throw new NotImplementedException();
         }
@@ -87,7 +86,7 @@ namespace YunTuCore.Repository
             throw new NotImplementedException();
         }
 
-        public Task<bool> DeleteAsync(object[] ids)
+        public Task<bool> DeleteAsync(TKey[] ids)
         {
             throw new NotImplementedException();
         }

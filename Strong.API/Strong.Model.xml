@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Strong.Model</name>
+    </assembly>
+    <members>
+        <member name="T:Strong.Model.Dtos.WeatherForecast">
+            <summary>
+            天气预报DTO1
+            </summary>
+        </member>
+        <member name="P:Strong.Model.Dtos.WeatherForecast.Date">
+            <summary>
+            日期
+            </summary>
+        </member>
+        <member name="P:Strong.Model.Dtos.WeatherForecast.Temperature">
+            <summary>
+            温度
+            </summary>
+        </member>
+        <member name="P:Strong.Model.Dtos.WeatherForecast.Summary">
+            <summary>
+            总结
+            </summary>
+        </member>
+    </members>
+</doc>
