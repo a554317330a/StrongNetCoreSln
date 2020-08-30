@@ -6,7 +6,7 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile></DocumentationFile>
-    <OutputPath>../StrongAPI/bin/</OutputPath>
+    <OutputPath>E:\DotNetCore\StrongNetCoreSln\StrongNetCoreSln\StrongAPI\bin\Debug\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
