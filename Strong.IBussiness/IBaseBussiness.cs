@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
 using System.Data;
+using System.Linq.Expressions;
+using System.Text;
 using System.Threading.Tasks;
 
-namespace Strong.IRepository
+namespace Strong.IBussiness
 {
-    public interface IBaseRepository<TEntity,TKey> where TEntity : class, new()
+    public interface  IBaseBussiness<TEntity,TKey> where  TEntity :class,new()
     {
+
+
         #region 添加数据
         int Add(TEntity model);
         int Add(List<TEntity> model);
@@ -110,10 +112,10 @@ namespace Strong.IRepository
         /// <param name="intTotalCount"></param>
         /// <param name="isAsc"></param>
         /// <returns></returns>
-       List<TEntity> Query(
-         Expression<Func<TEntity, bool>> whereExpression, int intPageIndex, int intPageSize, Expression<Func<TEntity, object>> orderByExpression, ref int intTotalCount, bool isAsc = true);
+        List<TEntity> Query(
+          Expression<Func<TEntity, bool>> whereExpression, int intPageIndex, int intPageSize, Expression<Func<TEntity, object>> orderByExpression, ref int intTotalCount, bool isAsc = true);
 
- 
+
         #endregion
 
         #region 异步
@@ -182,7 +184,7 @@ namespace Strong.IRepository
         /// <param name="isAsc"></param>
         /// <returns></returns>
         Task<List<TEntity>> QueryAsync(
-         Expression<Func<TEntity, bool>> whereExpression, int intPageIndex, int intPageSize, Expression<Func<TEntity, object>> orderByExpression,  bool isAsc = true);
+         Expression<Func<TEntity, bool>> whereExpression, int intPageIndex, int intPageSize, Expression<Func<TEntity, object>> orderByExpression, bool isAsc = true);
 
         /// <summary>
         /// 按条件返回记录数（异步）
@@ -202,8 +204,5 @@ namespace Strong.IRepository
 
         Task<DataTable> SqlQueryAsync(string sql);
         #endregion
-
-
-
     }
 }

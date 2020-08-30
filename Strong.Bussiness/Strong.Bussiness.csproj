@@ -4,4 +4,10 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Strong.IBussiness\Strong.IBussiness.csproj" />
+    <ProjectReference Include="..\Strong.IRepository\Strong.IRepository.csproj" />
+    <ProjectReference Include="..\Strong.Repository\Strong.Repository.csproj" />
+  </ItemGroup>
+
 </Project>

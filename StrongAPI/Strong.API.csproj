@@ -4,14 +4,22 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>Strong.API</AssemblyName>
     <RootNamespace>Strong.API</RootNamespace>
+    <OutputType>Exe</OutputType>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>..\StrongAPI\Strong.API.xml</DocumentationFile>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <WarningsAsErrors>NU1605;1591</WarningsAsErrors>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="Autofac.Extras.DynamicProxy" Version="5.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.7" />
     <PackageReference Include="Microsoft.DotNet.PlatformAbstractions" Version="3.1.6" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.5.1" />
@@ -20,9 +28,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Strong.Bussiness\Strong.Bussiness.csproj" />
     <ProjectReference Include="..\Strong.Common\Strong.Common.csproj" />
     <ProjectReference Include="..\Strong.Entities\Strong.Entities.csproj" />
     <ProjectReference Include="..\Strong.Extensions\Strong.Extensions.csproj" />
+    <ProjectReference Include="..\Strong.IBussiness\Strong.IBussiness.csproj" />
     <ProjectReference Include="..\Strong.Model\Strong.Model.csproj" />
   </ItemGroup>
 

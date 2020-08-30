@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Strong.Model", "Strong.Mode
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Strong.Extensions", "Strong.Extensions\Strong.Extensions.csproj", "{9F1A28D4-0D2A-4159-9BB4-657F110C10FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Strong.Common", "Strong.Common\Strong.Common.csproj", "{396C259C-630B-4832-B16F-64726FAD448D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Strong.Common", "Strong.Common\Strong.Common.csproj", "{396C259C-630B-4832-B16F-64726FAD448D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

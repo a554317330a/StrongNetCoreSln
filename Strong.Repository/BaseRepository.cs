@@ -1,5 +1,8 @@
 ﻿
+using SqlSugar;
 using Strong.Entities;
+using Strong.IRepository;
+using Strong.Repository;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -7,238 +10,293 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using YunTuCore.IRepository;
 
-namespace YunTuCore.Repository
+
+namespace Strong.Repository
 {
     public abstract class BaseRepository<TEntity,TKey> : IBaseRepository<TEntity,TKey> where TEntity : class, new()
     {
-        public SqlSugarClient  _Db { get; } = null;
+        private DbContext context;
+        private SqlSugarClient db;
+        private SimpleClient<TEntity> entityDB;
 
-        public BaseRepository(SqlSugarClient Db) 
+        public DbContext Context
         {
-            _Db = Db ?? throw new ArgumentNullException(nameof(MyContext));
-
+            get { return context; }
+            set { context = value; }
+        }
+        internal SqlSugarClient Db
+        {
+            get { return db; }
+            private set { db = value; }
+        }
+        internal SimpleClient<TEntity> EntityDB
+        {
+            get { return entityDB; }
+            private set { entityDB = value; }
+        }
+        public BaseRepository()
+        {
+            DbContext.Init(BaseDBConfig.ConnectionString);
+            context = DbContext.GetDbContext();
+            db = context.Db;
+            entityDB = context.GetEntityDB<TEntity>(db);
         }
 
         public int Add(TEntity model)
         {
-            throw new NotImplementedException();
+           return db.Insertable<TEntity>(model).ExecuteReturnIdentity() ;
         }
 
         public int Add(List<TEntity> model)
         {
-            throw new NotImplementedException();
+            return db.Insertable<TEntity>(model).ExecuteReturnIdentity();
         }
 
         public int Add(TEntity entity, Expression<Func<TEntity, object>> insertColumns = null)
         {
-            throw new NotImplementedException();
+            return db.Insertable<TEntity>(entity).InsertColumns(insertColumns).ExecuteReturnIdentity();
         }
 
-        public Task<int> AddAsync(TEntity model)
+        public async Task<int> AddAsync(TEntity model)
         {
-            throw new NotImplementedException();
+            var i = await db.Insertable(model).ExecuteReturnIdentityAsync();
+            return i;
         }
 
-        public Task<int> AddAsync(TEntity entity, Expression<Func<TEntity, object>> insertColumns = null)
+        public async Task<int> AddAsync(TEntity entity, Expression<Func<TEntity, object>> insertColumns = null)
         {
-            throw new NotImplementedException();
+           var i = await db.Insertable<TEntity>(entity).InsertColumns(insertColumns).ExecuteReturnIdentityAsync();
+            return i;
         }
 
-        public Task<int> AddAsync(List<TEntity> entity)
+        public async Task<int> AddAsync(List<TEntity> entity)
         {
-            throw new NotImplementedException();
+            var i = await db.Insertable(entity).ExecuteReturnIdentityAsync();
+            return i;
         }
 
         public bool Delete(TKey id)
         {
-            throw new NotImplementedException();
+            return db.Deleteable<TEntity>(id).ExecuteCommand()>0;
+            
         }
 
         public bool Delete(TEntity entity)
         {
-            throw new NotImplementedException();
+            return db.Deleteable<TEntity>(entity).ExecuteCommand() > 0;
         }
 
         public bool Delete(TKey[] ids)
         {
-            throw new NotImplementedException();
+            return db.Deleteable<TEntity>().In(ids).ExecuteCommand() > 0;
         }
 
         public bool Delete(List<TEntity> entitys)
         {
-            throw new NotImplementedException();
+            return db.Deleteable<TEntity>(entitys).ExecuteCommand() > 0;
         }
 
         public bool Delete(Expression<Func<TEntity, bool>> whereExpression)
         {
-            throw new NotImplementedException();
+            return db.Deleteable<TEntity>().Where(whereExpression).ExecuteCommand() > 0;
         }
 
-        public Task<bool> DeleteAsync(TKey id)
+        public async Task<bool> DeleteAsync(TKey id)
         {
-            throw new NotImplementedException();
+            return await db.Deleteable<TEntity>(id).ExecuteCommandAsync() > 0; ;
         }
 
-        public Task<bool> DeleteAsync(TEntity entity)
+        public async Task<bool> DeleteAsync(TEntity entity)
         {
-            throw new NotImplementedException();
+            return await  db.Deleteable(entity).ExecuteCommandAsync()>0;
+            
         }
 
-        public Task<bool> DeleteAsync(TKey[] ids)
+        public async Task<bool> DeleteAsync(TKey[] ids)
         {
-            throw new NotImplementedException();
+            var i = await db.Deleteable<TEntity>().In(ids).ExecuteCommandAsync();
+            return i > 0;
         }
 
-        public Task<bool> DeleteAsync(List<TEntity> entitys)
+        public async Task<bool> DeleteAsync(List<TEntity> entitys)
         {
-            throw new NotImplementedException();
+            var i = await db.Deleteable<TEntity>(entitys).ExecuteCommandAsync();
+            return i > 0;
         }
 
-        public Task<bool> DeleteAsync(Expression<Func<TEntity, bool>> whereExpression)
+        public async Task<bool> DeleteAsync(Expression<Func<TEntity, bool>> whereExpression)
         {
-            throw new NotImplementedException();
+            var i = await  db.Deleteable<TEntity>().Where(whereExpression).ExecuteCommandAsync();
+            return i > 0;
         }
 
-        public bool Update(TEntity entity)
+        public  bool Update(TEntity entity)
         {
-            throw new NotImplementedException();
+            return  db.Updateable(entity).ExecuteCommand()>0;
         }
 
-        public int Update(TEntity entity, List<string> fileds)
+        public bool Update(TEntity entity, params string[] columns)
         {
-            throw new NotImplementedException();
+            return db.Updateable(entity).UpdateColumns(columns).ExecuteCommand() > 0;
         }
 
         public bool Update(List<TEntity> entitys)
         {
-            throw new NotImplementedException();
+            return db.Updateable(entitys).ExecuteCommand() > 0;
         }
 
-        public int Update(List<TEntity> entitys, List<string> fileds)
+        public bool Update(List<TEntity> entitys, params string[] columns)
         {
-            throw new NotImplementedException();
+            return db.Updateable(entitys).UpdateColumns(columns).ExecuteCommand() > 0;
         }
 
-        public Task<bool> UpdateAsync(TEntity entity)
+        public async Task<bool> UpdateAsync(TEntity entity)
         {
-            throw new NotImplementedException();
+            return await db.Updateable(entity).ExecuteCommandAsync() > 0;
         }
 
-        public Task<int> UpdateAsync(TEntity entity, List<string> fileds)
+        public async Task<bool> UpdateAsync(TEntity entity, params string[] columns)
         {
-            throw new NotImplementedException();
+            return await db.Updateable(entity).UpdateColumns(columns).ExecuteCommandAsync() > 0;
         }
 
-        public Task<bool> UpdateAsync(List<TEntity> entitys)
+        public async Task<bool> UpdateAsync(List<TEntity> entitys)
         {
-            throw new NotImplementedException();
+            return await db.Updateable(entitys).ExecuteCommandAsync() > 0;
         }
 
-        public Task<int> UpdateAsync(List<TEntity> entitys, List<string> fileds)
+        public async Task<bool> UpdateAsync(List<TEntity> entitys, params string[] columns)
         {
-            throw new NotImplementedException();
-        }
+            return await db.Updateable(entitys).UpdateColumns(columns).ExecuteCommandAsync() > 0;
 
+        }
+        #region 查询
+
+       
         public TEntity FindWhere(Expression<Func<TEntity, bool>> whereExpression)
         {
-            throw new NotImplementedException();
+            return db.Queryable<TEntity>().WhereIF(whereExpression!=null, whereExpression).First();
         }
 
-        public TEntity Query(TKey id, bool blnUseCache = false)
+        public TEntity Query(TKey id)
         {
-            throw new NotImplementedException();
+          
+            return entityDB.GetById(id); 
         }
 
         public List<TEntity> Query()
         {
-            throw new NotImplementedException();
+            return entityDB.GetList();
         }
 
         public List<TEntity> Query(Expression<Func<TEntity, bool>> whereExpression)
         {
-            throw new NotImplementedException();
+            return entityDB.GetList(whereExpression);
         }
 
         public List<TEntity> Query(Expression<Func<TEntity, bool>> whereExpression, string strOrderByFileds)
         {
-            throw new NotImplementedException();
+            return db.Queryable<TEntity>().OrderByIF(!string.IsNullOrEmpty(strOrderByFileds), strOrderByFileds).WhereIF(whereExpression != null, whereExpression).ToList();
         }
 
         public List<TEntity> Query(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression, bool isAsc = true)
         {
-            throw new NotImplementedException();
+            return  db.Queryable<TEntity>().OrderByIF(orderByExpression != null, orderByExpression, isAsc ? OrderByType.Asc : OrderByType.Desc).WhereIF(whereExpression != null, whereExpression).ToList();
         }
 
         public List<TEntity> Query(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression, int intTop, bool isAsc = true)
         {
-            throw new NotImplementedException();
+
+            return  db.Queryable<TEntity>().OrderByIF(orderByExpression!=null, orderByExpression, isAsc?OrderByType.Asc:OrderByType.Desc).WhereIF(whereExpression != null, whereExpression).Take(intTop).ToList();
+
         }
 
-        public List<TEntity> Query(Expression<Func<TEntity, bool>> whereExpression, int intPageIndex, int intPageSize, Expression<Func<TEntity, object>> orderByExpression, ref int intTotalCount, bool isAsc = true)
+        public List<TEntity> Query(
+            Expression<Func<TEntity, bool>> whereExpression,
+            int intPageIndex, int intPageSize,
+            Expression<Func<TEntity, object>> orderByExpression,
+            ref int intTotalCount,
+            bool isAsc = true)
         {
-            throw new NotImplementedException();
+
+            return db.Queryable<TEntity>().
+                OrderByIF(orderByExpression != null, orderByExpression, isAsc ? OrderByType.Asc : OrderByType.Desc).
+                WhereIF(whereExpression != null, whereExpression).
+                ToPageList(intPageIndex, intPageSize, ref intTotalCount);
+
+        }
+        public DataTable SqlQuery(string sql)
+        {
+            return db.Ado.GetDataTable(sql);
         }
 
-        public Task<int> GetTotal(Expression<Func<TEntity, bool>> whereExpression)
+        public async Task<TEntity> FindWhereAsync(Expression<Func<TEntity, bool>> whereExpression)
         {
-            throw new NotImplementedException();
+            return await db.Queryable<TEntity>().Where(whereExpression).FirstAsync();
         }
 
-        public Task<TEntity> FindWhereAsync(Expression<Func<TEntity, bool>> whereExpression)
+        public async Task<TEntity> QueryAsync(TKey id)
         {
-            throw new NotImplementedException();
+            return await Task.Run(() => entityDB.GetById(id));
         }
 
-        public Task<TEntity> QueryAsync(TKey id, bool blnUseCache = false)
+        public async Task<List<TEntity>> QueryAsync()
         {
-            throw new NotImplementedException();
+            return await db.Queryable<TEntity>().ToListAsync();
         }
 
-        public Task<List<TEntity>> QueryAsync()
+        public async Task<List<TEntity>> QueryAsync(Expression<Func<TEntity, bool>> whereExpression)
         {
-            throw new NotImplementedException();
+            return await db.Queryable<TEntity>().WhereIF(whereExpression!=null, whereExpression).ToListAsync();
         }
 
-        public Task<List<TEntity>> QueryAsync(Expression<Func<TEntity, bool>> whereExpression)
+        public async Task<List<TEntity>> QueryAsync(Expression<Func<TEntity, bool>> whereExpression, string strOrderByFileds)
         {
-            throw new NotImplementedException();
+            return await db.Queryable<TEntity>().OrderByIF(!string.IsNullOrEmpty(strOrderByFileds),strOrderByFileds).WhereIF(whereExpression != null, whereExpression).ToListAsync();
         }
 
-        public Task<List<TEntity>> QueryAsync(Expression<Func<TEntity, bool>> whereExpression, string strOrderByFileds)
+        public async Task<List<TEntity>> QueryAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression, bool isAsc = true)
         {
-            throw new NotImplementedException();
+            return await db.Queryable<TEntity>().OrderByIF(null!=orderByExpression, orderByExpression, isAsc?OrderByType.Asc:OrderByType.Desc).WhereIF(whereExpression != null, whereExpression).ToListAsync();
+
         }
 
-        public Task<List<TEntity>> QueryAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression, bool isAsc = true)
+        public async Task<List<TEntity>> QueryAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression, int intTop, bool isAsc = true)
         {
-            throw new NotImplementedException();
+            return await db.Queryable<TEntity>().OrderByIF(null != orderByExpression, orderByExpression, isAsc ? OrderByType.Asc : OrderByType.Desc).WhereIF(whereExpression != null, whereExpression)
+                .Take(intTop).ToListAsync();
+
+        }
+        /// <summary>
+        /// 分页查询，异
+        /// </summary>
+        /// <param name="whereExpression"></param>
+        /// <param name="intPageIndex"></param>
+        /// <param name="intPageSize"></param>
+        /// <param name="orderByExpression"></param>
+        /// <param name="isAsc"></param>
+        /// <returns></returns>
+        public async Task<List<TEntity>> QueryAsync(Expression<Func<TEntity, bool>> whereExpression, int intPageIndex, int intPageSize, Expression<Func<TEntity, object>> orderByExpression, bool isAsc = true)
+        {
+            return await db.Queryable<TEntity>().
+                 OrderByIF(orderByExpression != null, orderByExpression, isAsc ? OrderByType.Asc : OrderByType.Desc).
+                 WhereIF(whereExpression != null, whereExpression).
+                 ToPageListAsync(intPageIndex, intPageSize);
         }
 
-        public Task<List<TEntity>> QueryAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression, int intTop, bool isAsc = true)
+        public async Task<int> GetTotalAsync(Expression<Func<TEntity, bool>> whereExpression)
         {
-            throw new NotImplementedException();
+            return await Task.Run(()=> entityDB.Count(whereExpression)) ;
         }
 
-        public Task<List<TEntity>> QueryAsync(Expression<Func<TEntity, bool>> whereExpression, int intPageIndex, int intPageSize, Expression<Func<TEntity, object>> orderByExpression, ref int intTotalCount, bool isAsc = true)
+      
+
+        public async Task<DataTable> SqlQueryAsync(string sql)
         {
-            throw new NotImplementedException();
+            return await db.Ado.GetDataTableAsync(sql);
         }
 
-        public Task<int> GetTotalAsync(Expression<Func<TEntity, bool>> whereExpression)
-        {
-            throw new NotImplementedException();
-        }
-
-        public DataSet SqlQuery(string sql)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<DataSet> SqlQueryAsync(string sql)
-        {
-            throw new NotImplementedException();
-        }
+        #endregion
     }
 }

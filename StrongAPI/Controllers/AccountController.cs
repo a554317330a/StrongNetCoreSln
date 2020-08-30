@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Strong.API.AuthHelper;
+using Strong.Entities;
+using Strong.IBussiness;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +13,12 @@ namespace Strong.API.Controllers
     [Route("[controller]")]
     public class AccountController : ControllerBase
     {
+        readonly ITBApilogBussiness _iTBApilogBussiness;
 
+        public AccountController(ITBApilogBussiness _iTBApilogBussiness)
+        {
+            this._iTBApilogBussiness = _iTBApilogBussiness;
+        }
         [HttpGet]
         public async Task<object> Login(string name, string pwd)
         {
@@ -32,11 +39,20 @@ namespace Strong.API.Controllers
                 jwtStr = "login fail!!!";
             }
 
-            return Ok(new
+            return  Ok(new
             {
                 success = suc,
                 token = jwtStr
             });
+        }
+
+
+        [HttpPost]
+        public async Task<List<TbApilog>> Get(int id=1)
+        {
+            //IAdvertisementServices advertisementServices = new AdvertisementServices();//需要引用两个命名空间Blog.Core.IServices;Blog.Core.Services;
+
+            return await _iTBApilogBussiness.QueryAsync(d => d.Logid == id);
         }
 
     }
