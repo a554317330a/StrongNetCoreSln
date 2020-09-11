@@ -60,6 +60,11 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="F:Strong.API.Filter.GlobalRoutePrefixFilter._centralPrefix">
+            <summary>
+            定义一个路由前缀变量
+            </summary>
+        </member>
         <member name="T:StrongAPI.Program">
             <summary>
             程序入口
@@ -104,6 +109,18 @@
             用于注册services服务（第三方，EF，identity等）到容器中，使Configure可以使用这些服务
             </summary>
             <param name="services"></param>
+        </member>
+        <member name="T:StrongAPI.Startup.RoutePrefix">
+            <summary>
+            路由变量前缀配置
+            </summary>
+        </member>
+        <member name="F:StrongAPI.Startup.RoutePrefix.Name">
+            <summary>
+            前缀名
+            如果不需要，尽量留空，不要修改
+            除非一定要在所有的 api 前统一加上特定前缀
+            </summary>
         </member>
         <member name="M:StrongAPI.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
             <summary>

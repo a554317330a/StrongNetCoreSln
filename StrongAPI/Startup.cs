@@ -2,20 +2,23 @@ using Autofac;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Strong.API.AuthHelper;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using Strong.API.Filter;
 using Strong.Common;
-using Strong.IBussiness;
+using Strong.Common.Redis;
+using Strong.Extensions.ServiceExtensions;
 using Swashbuckle.AspNetCore.Filters;
-using Swashbuckle.AspNetCore.Swagger;
+
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -58,17 +61,21 @@ namespace StrongAPI
 
             //读取配置文件
             services.AddSingleton(new Appsettings(Configuration));
+            services.AddSingleton<IRedisCacheManager, RedisCacheManager>();
+
+
+
             var symmetricKeyAsBase64 = AppSecretConfig.Audience_Secret_String;
             var keyByteArray = Encoding.ASCII.GetBytes(symmetricKeyAsBase64);
             var signingKey = new SymmetricSecurityKey(keyByteArray);
-            //var audienceConfig = Configuration.GetSection("Audience");
-
-            //var signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
-
             var basePath = Microsoft.DotNet.PlatformAbstractions.ApplicationEnvironment.ApplicationBasePath;
 
+           
+        
+
+
             #region JWT
-            
+
             #region 接口文档Swagger
             services.AddSwaggerGen(c =>
             {
@@ -112,54 +119,53 @@ namespace StrongAPI
             });
             #endregion
 
-            #region 【第二步：配置认证服务】
+ 
 
+            #endregion
+
+
+
+
+            //授权对象
+            services.AddAuthorizationSetup();
             // 添加JwtBearer服务
-            services.AddAuthentication("Bearer").AddJwtBearer(o =>
-             {
-                 o.TokenValidationParameters = new TokenValidationParameters
-                 {
-                     ValidateIssuerSigningKey = true,
-                     IssuerSigningKey = signingKey,
-                     ValidateIssuer = true,
-                     ValidIssuer = Appsettings.app("Issuer"),//发行人
-                     ValidateAudience = true,
-                     ValidAudience = Appsettings.app("Audience"),//订阅人
-                     ValidateLifetime = true,
-                     ClockSkew = TimeSpan.FromSeconds(30),// 这个是缓冲过期时间，也就是说，即使我们配置了过期时间，这里也要考虑进去，过期时间 + 缓冲，默认好像是7分钟，你可以直接设置为0
-                     RequireExpirationTime = true,
-                 };
-                 o.Events = new JwtBearerEvents
-                 {
-                     OnAuthenticationFailed = context =>
-                     {
-                         // 如果过期，则把<是否过期>添加到，返回头信息中
-                         if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
-                         {
-                             context.Response.Headers.Add("Token-Expired", "true");
-                         }
-                         return Task.CompletedTask;
-                     }
-                 };
-             });
+            services.AddAuthentication_JWTSetup();
 
-            #endregion
-
-            #region 授权对象
-            services.AddAuthorization(options =>
+             
+            services.AddControllers(o =>
             {
-                options.AddPolicy("Client", policy => policy.RequireRole("Client").Build());
-                options.AddPolicy("Admin", policy => policy.RequireRole("Admin").Build());
-                options.AddPolicy("API", policy => policy.RequireRole("API").Build());
-                options.AddPolicy("SystemOrClient", policy => policy.RequireRole("Admin", "Client"));
+                // 全局异常过滤
+                //o.Filters.Add(typeof(GlobalExceptionsFilter));
+                // 全局路由前缀，统一修改路由
+                o.Conventions.Insert(0, new GlobalRoutePrefixFilter(new RouteAttribute(RoutePrefix.Name)));
+            })
+            //全局配置Json序列化处理
+            .AddNewtonsoftJson(options =>
+            {
+                //忽略循环引用
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                //不使用驼峰样式的key
+                options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                //设置时间格式
+                options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss" ;
             });
-            #endregion
 
-            #endregion
 
-            services.AddControllers();
+            
         }
 
+        /// <summary>
+        /// 路由变量前缀配置
+        /// </summary>
+        public static class RoutePrefix
+        {
+            /// <summary>
+            /// 前缀名
+            /// 如果不需要，尽量留空，不要修改
+            /// 除非一定要在所有的 api 前统一加上特定前缀
+            /// </summary>
+            public const string Name = "[controller] /[action]";
+        }
         /// <summary>
         /// 用于配置整个HTTP请求的流程
         /// </summary>
@@ -227,15 +233,6 @@ namespace StrongAPI
                 // Service.dll 注入，有对应接口
                 var assemblysServices = Assembly.LoadFile(servicesDllFile);
                 builder.RegisterAssemblyTypes(assemblysServices).AsImplementedInterfaces();//指定已扫描程序集中的类型注册为提供所有其实现的接口。
-
-                //builder.RegisterAssemblyTypes(assemblysServices)
-                //          .AsImplementedInterfaces()
-                //          .InstancePerLifetimeScope()
-                //          .EnableInterfaceInterceptors()//引用Autofac.Extras.DynamicProxy;
-                //                                        // 如果你想注入两个，就这么写  InterceptedBy(typeof(BlogCacheAOP), typeof(BlogLogAOP));
-                //                                        // 如果想使用Redis缓存，请必须开启 redis 服务，端口号我的是6319，如果不一样还是无效，否则请使用memory缓存 BlogCacheAOP
-                //          .InterceptedBy(cacheType.ToArray());//允许将拦截器服务的列表分配给注册。 
-
                 //Repository.dll 注入，有对应接口
                 var assemblysRepository = Assembly.LoadFile(repositoryDllFile);
                 builder.RegisterAssemblyTypes(assemblysRepository).AsImplementedInterfaces();

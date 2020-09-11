@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Strong.API.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("")]
     public class AccountController : ControllerBase
     {
         readonly ITBApilogBussiness _iTBApilogBussiness;
@@ -47,7 +47,7 @@ namespace Strong.API.Controllers
         }
 
 
-        [HttpPost]
+        [HttpGet]
         public async Task<List<TbApilog>> Get(int id=1)
         {
             //IAdvertisementServices advertisementServices = new AdvertisementServices();//需要引用两个命名空间Blog.Core.IServices;Blog.Core.Services;
