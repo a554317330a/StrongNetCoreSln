@@ -1,0 +1,12 @@
+﻿@Model.usingstr
+using SqlSugar;
+using System;
+using System.Collections.Generic;
+namespace @Model.ClassNamespace
+{
+	public class @(Model.Name)Repository : BaseRepository<@(Model.Name),int>, I@(Model.Name)Repository
+	{
+ 
+	
+	}
+}

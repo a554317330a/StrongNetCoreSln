@@ -1,4 +1,5 @@
 ﻿using Strong.Entities;
+using Strong.Entities.DBModel;
 using Strong.IBussiness;
 using Strong.IRepository;
 using System;

@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Strong.API.AuthHelper;
+using Strong.Common.Redis;
 using Strong.Entities;
+using Strong.Entities.DBModel;
 using Strong.IBussiness;
 using System;
 using System.Collections.Generic;
@@ -14,10 +16,11 @@ namespace Strong.API.Controllers
     public class AccountController : ControllerBase
     {
         readonly ITBApilogBussiness _iTBApilogBussiness;
-
-        public AccountController(ITBApilogBussiness _iTBApilogBussiness)
+        private readonly IRedisCacheManager  redis;
+        public AccountController(ITBApilogBussiness _iTBApilogBussiness, IRedisCacheManager _redis)
         {
             this._iTBApilogBussiness = _iTBApilogBussiness;
+            this.redis = _redis;
         }
         [HttpGet]
         public async Task<object> Login(string name, string pwd)
@@ -45,8 +48,7 @@ namespace Strong.API.Controllers
                 token = jwtStr
             });
         }
-
-
+ 
         [HttpGet]
         public async Task<List<TbApilog>> Get(int id=1)
         {

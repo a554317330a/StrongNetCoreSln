@@ -1,4 +1,6 @@
-﻿using StackExchange.Redis;
+﻿using CSRedis;
+using Microsoft.Extensions.Configuration;
+using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -6,11 +8,11 @@ using System.Text;
 namespace Strong.Common.Redis
 {
     public class RedisCacheManager : IRedisCacheManager
-    {
+    {            
 
         private readonly string redisConnenctionString;
 
-        public volatile ConnectionMultiplexer redisConnection;
+        public  CSRedisClient redisConnection;
 
         private readonly object redisConnectionLock = new object();
 
@@ -31,10 +33,10 @@ namespace Strong.Common.Redis
         /// 通过双if 夹lock的方式，实现单例模式
         /// </summary>
         /// <returns></returns>
-        private ConnectionMultiplexer GetRedisConnection()
+        private  CSRedisClient GetRedisConnection()
         {
             //如果已经连接实例，直接返回
-            if (this.redisConnection != null && this.redisConnection.IsConnected)
+            if (this.redisConnection != null)
             {
                 return this.redisConnection;
             }
@@ -48,16 +50,8 @@ namespace Strong.Common.Redis
                 }
                 try
                 {
-                    var config = new ConfigurationOptions
-                    {
-                        AbortOnConnectFail = false,
-                        AllowAdmin = true,
-                        ConnectTimeout = 15000,//改成15s
-                        SyncTimeout = 5000,
-                        //Password = "Pwd",//Redis数据库密码
-                        EndPoints = { redisConnenctionString }// connectionString 为IP:Port 如”192.168.2.110:6379”
-                    };
-                    this.redisConnection = ConnectionMultiplexer.Connect(config);
+                    this.redisConnection = new CSRedisClient(redisConnenctionString);
+                   
                 }
                 catch (Exception)
                 {
@@ -66,20 +60,7 @@ namespace Strong.Common.Redis
             }
             return this.redisConnection;
         }
-        /// <summary>
-        /// 清除
-        /// </summary>
-        public void Clear()
-        {
-            foreach (var endPoint in this.GetRedisConnection().GetEndPoints())
-            {
-                var server = this.GetRedisConnection().GetServer(endPoint);
-                foreach (var key in server.Keys())
-                {
-                    redisConnection.GetDatabase().KeyDelete(key);
-                }
-            }
-        }
+   
         /// <summary>
         /// 判断是否存在
         /// </summary>
@@ -87,7 +68,7 @@ namespace Strong.Common.Redis
         /// <returns></returns>
         public bool Get(string key)
         {
-            return redisConnection.GetDatabase().KeyExists(key);
+            return redisConnection.Exists(key);
         }
 
         /// <summary>
@@ -97,7 +78,7 @@ namespace Strong.Common.Redis
         /// <returns></returns>
         public string GetValue(string key)
         {
-            return redisConnection.GetDatabase().StringGet(key);
+            return redisConnection.Get(key);
         }
 
         /// <summary>
@@ -108,11 +89,11 @@ namespace Strong.Common.Redis
         /// <returns></returns>
         public TEntity Get<TEntity>(string key)
         {
-            var value = redisConnection.GetDatabase().StringGet(key);
-            if (value.HasValue)
+            var value = redisConnection.Get<TEntity>(key);
+            if (value!=null)
             {
                 //需要用的反序列化，将Redis存储的Byte[]，进行反序列化
-                return SerializeHelper.Deserialize<TEntity>(value);
+                return value;
             }
             else
             {
@@ -126,12 +107,12 @@ namespace Strong.Common.Redis
         /// <param name="key"></param>
         public void Remove(string key)
         {
-            redisConnection.GetDatabase().KeyDelete(key);
+            redisConnection.Del(key);
         }
         /// <summary>
         /// 设置
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="key"></para    m>
         /// <param name="value"></param>
         /// <param name="cacheTime"></param>
         public void Set(string key, object value, TimeSpan cacheTime)
@@ -139,7 +120,7 @@ namespace Strong.Common.Redis
             if (value != null)
             {
                 //序列化，将object值生成RedisValue
-                redisConnection.GetDatabase().StringSet(key, SerializeHelper.Serialize(value), cacheTime);
+                redisConnection.Set(key, SerializeHelper.Serialize(value), cacheTime);
             }
         }
 
@@ -151,7 +132,7 @@ namespace Strong.Common.Redis
         /// <returns></returns>
         public bool SetValue(string key, byte[] value)
         {
-            return redisConnection.GetDatabase().StringSet(key, value, TimeSpan.FromSeconds(120));
+            return redisConnection.Set(key, value, TimeSpan.FromSeconds(120));
         }
 
     }

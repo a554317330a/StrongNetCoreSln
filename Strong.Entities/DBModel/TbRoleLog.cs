@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Strong.Entities
+namespace Strong.Entities.DBModel
 {
     [SugarTable("Tb_Role_Log", "角色日志表")]
     public partial class TbRoleLog

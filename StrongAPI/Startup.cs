@@ -13,6 +13,8 @@ using Newtonsoft.Json.Serialization;
 using Strong.API.Filter;
 using Strong.Common;
 using Strong.Common.Redis;
+using Strong.Entities.Seed;
+using Strong.Extensions.Middlewares;
 using Strong.Extensions.ServiceExtensions;
 using Swashbuckle.AspNetCore.Filters;
 
@@ -31,7 +33,9 @@ namespace StrongAPI
     /// </summary>
     public class Startup
     {
-
+        public IConfiguration Configuration { get; }
+        public IWebHostEnvironment Env { get; }
+        private IServiceCollection _services;
         /// <summary>
         /// API名称
         /// </summary>
@@ -41,15 +45,13 @@ namespace StrongAPI
         /// 构造函数
         /// </summary>
         /// <param name="configuration"></param>
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+            Env = env;
         }
 
-        /// <summary>
-        /// 配置
-        /// </summary>
-        public IConfiguration Configuration { get; }
+        
 
         /// <summary>
         /// 用于注册services服务（第三方，EF，identity等）到容器中，使Configure可以使用这些服务
@@ -63,79 +65,28 @@ namespace StrongAPI
             services.AddSingleton(new Appsettings(Configuration));
             services.AddSingleton<IRedisCacheManager, RedisCacheManager>();
 
-
-
             var symmetricKeyAsBase64 = AppSecretConfig.Audience_Secret_String;
             var keyByteArray = Encoding.ASCII.GetBytes(symmetricKeyAsBase64);
             var signingKey = new SymmetricSecurityKey(keyByteArray);
             var basePath = Microsoft.DotNet.PlatformAbstractions.ApplicationEnvironment.ApplicationBasePath;
-
-           
-        
-
-
-            #region JWT
-
-            #region 接口文档Swagger
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("V1", new OpenApiInfo
-                {
-                    // {ApiName} 定义成全局变量，方便修改
-                    Version = "V1",
-                    Title = $"{ApiName} 接口文档——Netcore 3.0",
-                    Description = $"{ApiName} HTTP API V1",
-                    Contact = new OpenApiContact { Name = ApiName, Email = "554317330@qq.com", Url = new Uri("http://www.iyuntu.com") },
-                    License = new OpenApiLicense { Name = ApiName, Url = new Uri("http://www.iyuntu.com") }
-                });
-                c.OrderActionsBy(o => o.RelativePath);
-
-                #region XML文档
-
-                var xmlPath = Path.Combine(basePath, "Strong.API.xml");//这个就是刚刚配置的xml文件名
-                c.IncludeXmlComments(xmlPath, true);//默认的第二个参数是false，这个是controller的注释，记得修改
-
-                var xmlModelPath = Path.Combine(basePath, "Strong.Model.xml");//这个就是Model层的xml文件名
-                c.IncludeXmlComments(xmlModelPath);
-
-                #endregion
-
-                #region 【第一步,Swagger开启JWT认证】
-
-                //开启头部权限锁
-                c.OperationFilter<AddResponseHeadersFilter>();
-                c.OperationFilter<AppendAuthorizeToSummaryOperationFilter>();
-                c.OperationFilter<SecurityRequirementsOperationFilter>();
-
-                c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
-                {
-                    Description = "JWT授权(数据将在请求头中进行传输) 直接在下框中输入Bearer {token}（注意两者之间是一个空格）\"",
-                    Name = "Authorization",//jwt默认的参数名称
-                    In = ParameterLocation.Header,//jwt默认存放Authorization信息的位置(请求头中)
-                    Type = SecuritySchemeType.ApiKey
-                });
-
-                #endregion
-            });
-            #endregion
-
- 
-
-            #endregion
-
-
-
-
+            //种子数据
+            services.AddDbSetup();
+            //跨域
+            services.AddCorsSetup();
+            //添加Swagger
+            services.AddSwaggerSetup();
             //授权对象
             services.AddAuthorizationSetup();
             // 添加JwtBearer服务
             services.AddAuthentication_JWTSetup();
 
-             
+            //控制器过滤
             services.AddControllers(o =>
             {
+                //全局控制器方法过滤
+                o.Filters.Add(new ActionFilter());
                 // 全局异常过滤
-                //o.Filters.Add(typeof(GlobalExceptionsFilter));
+                o.Filters.Add(new ExceptionFilter());
                 // 全局路由前缀，统一修改路由
                 o.Conventions.Insert(0, new GlobalRoutePrefixFilter(new RouteAttribute(RoutePrefix.Name)));
             })
@@ -150,8 +101,9 @@ namespace StrongAPI
                 options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss" ;
             });
 
+            _services = services;
 
-            
+
         }
 
         /// <summary>
@@ -172,8 +124,14 @@ namespace StrongAPI
         /// <param name="app"></param>
         /// <param name="env"></param>
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, MyContext myContext, IWebHostEnvironment env)
         {
+
+
+            // 查看注入的所有服务
+            app.UseAllServicesMildd(_services);
+
+
             #region 判断环境
 
             if (env.IsDevelopment())
@@ -188,19 +146,24 @@ namespace StrongAPI
             #endregion
 
             #region Swagger
-
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint($"/swagger/V1/swagger.json", $"{ApiName} V1");
-                //路径配置，设置为空，表示直接在根域名（localhost:8001）访问该文件,注意localhost:8001/swagger是访问不到的，去launchSettings.json把launchUrl去掉，如果你想换一个路径，直接写名字即可，比如直接写c.RoutePrefix = "doc";
-                c.RoutePrefix = "";
-            });
+            // 封装Swagger
+            app.UseSwaggerMildd();
             #endregion
+
+
+            // CORS跨域
+            app.UseCors(Appsettings.app(new string[] { "Startup", "Cors", "PolicyName" }));
 
             //用户构建HTTPS通道（将HTTP请求重定向到HTTPS中间件）
             app.UseHttpsRedirection();
 
+            // 使用静态文件
+            app.UseStaticFiles();
+            // 使用cookie
+            //app.UseCookiePolicy();
+            // 返回错误码
+            app.UseStatusCodePages();
+            // Routing
             app.UseRouting();
 
             //开启认证
@@ -212,54 +175,15 @@ namespace StrongAPI
             {
                 endpoints.MapControllers();
             });
+
+
+
+            app.UseSeedDataMildd(myContext, Env.WebRootPath);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            var basePath = Microsoft.DotNet.PlatformAbstractions.ApplicationEnvironment.ApplicationBasePath;
-
-            var servicesDllFile = Path.Combine(basePath, "Strong.Bussiness.dll");//获取注入项目绝对路径
-            var repositoryDllFile = Path.Combine(basePath, "Strong.Repository.dll");//获取注入项目绝对路径
-
-            //注册要通过反射创建的组件
-
-            //builder.RegisterType<BlogCacheAOP>();//可以直接替换其他拦截器
-            //builder.RegisterType<BlogRedisCacheAOP>();//可以直接替换其他拦截器
-            //builder.RegisterType<BlogLogAOP>();//这样可以注入第二个
-
-            try
-            {
-
-                // Service.dll 注入，有对应接口
-                var assemblysServices = Assembly.LoadFile(servicesDllFile);
-                builder.RegisterAssemblyTypes(assemblysServices).AsImplementedInterfaces();//指定已扫描程序集中的类型注册为提供所有其实现的接口。
-                //Repository.dll 注入，有对应接口
-                var assemblysRepository = Assembly.LoadFile(repositoryDllFile);
-                builder.RegisterAssemblyTypes(assemblysRepository).AsImplementedInterfaces();
-
-                // AOP 开关，如果想要打开指定的功能，只需要在 appsettigns.json 对应对应 true 就行。
-                var cacheType = new List<Type>();
-                //if (Appsettings.app(new string[] { "AppSettings", "RedisCachingAOP", "Enabled" }).ObjToBool())
-                //{
-                //    cacheType.Add(typeof(BlogRedisCacheAOP));
-                //}
-                //if (Appsettings.app(new string[] { "AppSettings", "MemoryCachingAOP", "Enabled" }).ObjToBool())
-                //{
-                //    cacheType.Add(typeof(BlogCacheAOP));
-                //}
-                //if (Appsettings.app(new string[] { "AppSettings", "LogAOP", "Enabled" }).ObjToBool())
-                //{
-                //    cacheType.Add(typeof(BlogLogAOP));
-                //}
-
-
-
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("※※★※※ 如果你是第一次下载项目，请先对整个解决方案dotnet build（F6编译），然后再对api层 dotnet run（F5执行），\n因为解耦了，如果你是发布的模式，请检查bin文件夹是否存在Repository.dll和service.dll ※※★※※" + ex.Message + "\n" + ex.InnerException);
-            }
-
+            builder.RegisterModule(new AutofacModuleRegister());
         }
 
 

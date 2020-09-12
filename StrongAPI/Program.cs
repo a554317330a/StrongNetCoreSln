@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Autofac.Extensions.DependencyInjection;
+using System.IO;
 
 namespace StrongAPI
 {
@@ -34,14 +35,24 @@ namespace StrongAPI
         public static IHostBuilder CreateHostBuilder(string[] args) =>
         
         Host.CreateDefaultBuilder(args)
-        .UseServiceProviderFactory(new AutofacServiceProviderFactory())
-        //.ConfigureServices((context, services) =>
-        //{
-        //    services.Configure<KestrelServerOptions>(context.Configuration.GetSection("Kestrel"));
-        //})
+        .UseServiceProviderFactory(new AutofacServiceProviderFactory())//使用AutoFac工厂
         .ConfigureWebHostDefaults(webBuilder =>
         {
-            webBuilder.UseStartup<Startup>().UseKestrel().UseUrls("https://*:8818");
+            webBuilder.UseStartup<Startup>().UseKestrel(options=> {
+                options.Limits.MaxConcurrentConnections = 100;
+                options.Limits.MaxConcurrentUpgradedConnections = 100;
+                options.Limits.MaxRequestBufferSize = 102400;
+                })
+            .ConfigureLogging((hostingContext, builder) =>
+            {
+                //过滤掉系统默认的一些日志
+                builder.AddFilter("System", LogLevel.Error);
+                builder.AddFilter("Microsoft", LogLevel.Error);
+                //可配置文件
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "Log4net.config");
+                builder.AddLog4Net(path);
+            })
+            .UseUrls("https://*:8818");
         });
          
     }

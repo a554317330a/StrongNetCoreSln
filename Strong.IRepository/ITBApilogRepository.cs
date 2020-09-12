@@ -1,7 +1,4 @@
-﻿using Strong.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Strong.Entities.DBModel;
 
 
 namespace Strong.IRepository

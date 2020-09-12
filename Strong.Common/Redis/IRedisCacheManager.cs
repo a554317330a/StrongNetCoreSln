@@ -21,7 +21,8 @@ namespace Strong.Common.Redis
         //移除某一个缓存值
         void Remove(string key);
 
-        //全部清除
-        void Clear();
+         
+
+         bool SetValue(string key, byte[] value);
     }
 }

@@ -11,7 +11,7 @@ namespace Strong.Repository
 
         private static string _connectionString;
         private static DbType _dbType;
-        private SqlSugarClient _db;
+        private SqlSugarClient _db; 
 
         /// <summary>
         /// 连接字符串 

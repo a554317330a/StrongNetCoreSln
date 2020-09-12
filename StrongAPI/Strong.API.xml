@@ -93,16 +93,11 @@
             API名称
             </summary>
         </member>
-        <member name="M:StrongAPI.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+        <member name="M:StrongAPI.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
             <summary>
             构造函数
             </summary>
             <param name="configuration"></param>
-        </member>
-        <member name="P:StrongAPI.Startup.Configuration">
-            <summary>
-            配置
-            </summary>
         </member>
         <member name="M:StrongAPI.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
@@ -122,7 +117,7 @@
             除非一定要在所有的 api 前统一加上特定前缀
             </summary>
         </member>
-        <member name="M:StrongAPI.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+        <member name="M:StrongAPI.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Strong.Entities.Seed.MyContext,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
             <summary>
             用于配置整个HTTP请求的流程
             </summary>
