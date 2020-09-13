@@ -1,10 +1,8 @@
 ﻿using Autofac;
 using log4net;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Text;
 
 namespace Strong.Extensions.ServiceExtensions
 {
@@ -26,6 +24,7 @@ namespace Strong.Extensions.ServiceExtensions
                 // Service.dll 注入，有对应接口
                 var assemblysServices = Assembly.LoadFile(servicesDllFile);
                 builder.RegisterAssemblyTypes(assemblysServices).AsImplementedInterfaces();//指定已扫描程序集中的类型注册为提供所有其实现的接口。
+               
                 //Repository.dll 注入，有对应接口
                 var assemblysRepository = Assembly.LoadFile(repositoryDllFile);
                 builder.RegisterAssemblyTypes(assemblysRepository).AsImplementedInterfaces();

@@ -4,16 +4,15 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
 
 namespace Strong.Bussiness
 {
-    public class BaseBussiness<TEntity, TKey> : IBaseBussiness<TEntity, TKey> where TEntity : class, new()
+    public class BaseBussiness<TEntity> : IBaseBussiness<TEntity> where TEntity : class, new()
     {
 
-        public IBaseRepository<TEntity, TKey> BaseDal;//通过在子类的构造函数中注入，这里是基类，不用构造函数
+        public IBaseRepository<TEntity> BaseDal;//通过在子类的构造函数中注入，这里是基类，不用构造函数
 
         public int Add(TEntity model)
         {
@@ -32,14 +31,14 @@ namespace Strong.Bussiness
 
         public async Task<int> AddAsync(TEntity model)
         {
-        
+
             return await BaseDal.AddAsync(model);
         }
 
         public async Task<int> AddAsync(TEntity entity, Expression<Func<TEntity, object>> insertColumns = null)
         {
-            return await BaseDal.AddAsync(entity,insertColumns);
- 
+            return await BaseDal.AddAsync(entity, insertColumns);
+
         }
 
         public async Task<int> AddAsync(List<TEntity> entity)
@@ -47,9 +46,9 @@ namespace Strong.Bussiness
             return await BaseDal.AddAsync(entity);
         }
 
-        public bool Delete(TKey id)
+        public bool Delete(int id)
         {
-            return  BaseDal.Delete(id);
+            return BaseDal.Delete(id);
         }
 
         public bool Delete(TEntity entity)
@@ -57,7 +56,7 @@ namespace Strong.Bussiness
             return BaseDal.Delete(entity);
         }
 
-        public bool Delete(TKey[] ids)
+        public bool Delete(int[] ids)
         {
             return BaseDal.Delete(ids);
         }
@@ -72,7 +71,7 @@ namespace Strong.Bussiness
             return BaseDal.Delete(whereExpression);
         }
 
-        public async Task<bool> DeleteAsync(TKey id)
+        public async Task<bool> DeleteAsync(int id)
         {
             return await BaseDal.DeleteAsync(id);
         }
@@ -83,10 +82,10 @@ namespace Strong.Bussiness
 
         }
 
-        public async Task<bool> DeleteAsync(TKey[] ids)
+        public async Task<bool> DeleteAsync(int[] ids)
         {
             return await BaseDal.DeleteAsync(ids);
-           
+
         }
 
         public async Task<bool> DeleteAsync(List<TEntity> entitys)
@@ -107,7 +106,7 @@ namespace Strong.Bussiness
 
         public bool Update(TEntity entity, params string[] columns)
         {
-            return BaseDal.Update(entity,columns);
+            return BaseDal.Update(entity, columns);
         }
 
         public bool Update(List<TEntity> entitys)
@@ -137,7 +136,7 @@ namespace Strong.Bussiness
 
         public async Task<bool> UpdateAsync(List<TEntity> entitys, params string[] columns)
         {
-            return await BaseDal.UpdateAsync(entitys,columns);
+            return await BaseDal.UpdateAsync(entitys, columns);
 
         }
         #region 查询
@@ -148,7 +147,7 @@ namespace Strong.Bussiness
             return BaseDal.FindWhere(whereExpression);
         }
 
-        public TEntity Query(TKey id)
+        public TEntity Query(int id)
         {
 
             return BaseDal.Query(id);
@@ -171,7 +170,7 @@ namespace Strong.Bussiness
 
         public List<TEntity> Query(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression, bool isAsc = true)
         {
-            return BaseDal.Query(whereExpression, orderByExpression,isAsc);
+            return BaseDal.Query(whereExpression, orderByExpression, isAsc);
         }
 
         public List<TEntity> Query(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression, int intTop, bool isAsc = true)
@@ -200,7 +199,7 @@ namespace Strong.Bussiness
             return await BaseDal.FindWhereAsync(whereExpression);
         }
 
-        public async Task<TEntity> QueryAsync(TKey id)
+        public async Task<TEntity> QueryAsync(int id)
         {
             return await BaseDal.QueryAsync(id);
         }

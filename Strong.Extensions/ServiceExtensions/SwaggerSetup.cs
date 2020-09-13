@@ -4,10 +4,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using static Strong.Extensions.ServiceExtensions.CustomApiVersion;
 
 namespace Strong.Extensions.ServiceExtensions
@@ -36,20 +34,20 @@ namespace Strong.Extensions.ServiceExtensions
                         // {ApiName} 定义成全局变量，方便修改
                         Version = version,
                         Title = $"{ApiName} 接口文档——Netcore 3.0",
-                        Description = $"{ApiName} HTTP API "+ version,
+                        Description = $"{ApiName} HTTP API " + version,
                         Contact = new OpenApiContact { Name = ApiName, Email = "554317330@qq.com", Url = new Uri("http://www.iyuntu.com") },
                         License = new OpenApiLicense { Name = ApiName, Url = new Uri("http://www.iyuntu.com") }
                     });
                     c.OrderActionsBy(o => o.RelativePath);
                 });
-            #region XML文档
-            try
-            {
-                var xmlPath = Path.Combine(basePath, "Strong.API.xml");//这个就是刚刚配置的xml文件名
-                c.IncludeXmlComments(xmlPath, true);//默认的第二个参数是false，这个是controller的注释，记得修改
+                #region XML文档
+                try
+                {
+                    var xmlPath = Path.Combine(basePath, "Strong.API.xml");//这个就是刚刚配置的xml文件名
+                    c.IncludeXmlComments(xmlPath, true);//默认的第二个参数是false，这个是controller的注释，记得修改
 
-                var xmlModelPath = Path.Combine(basePath, "Strong.Model.xml");//这个就是Model层的xml文件名
-                c.IncludeXmlComments(xmlModelPath);
+                    var xmlModelPath = Path.Combine(basePath, "Strong.Model.xml");//这个就是Model层的xml文件名
+                    c.IncludeXmlComments(xmlModelPath);
                 }
                 catch (Exception ex)
                 {
@@ -71,8 +69,8 @@ namespace Strong.Extensions.ServiceExtensions
                     In = ParameterLocation.Header,//jwt默认存放Authorization信息的位置(请求头中)
                     Type = SecuritySchemeType.ApiKey
                 });
- 
-            }); 
+
+            });
         }
 
 

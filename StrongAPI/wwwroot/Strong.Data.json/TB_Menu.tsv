@@ -1,0 +1,52 @@
+﻿[
+  {
+    "Mflag": "XTSY",
+    "Mname": "系统首页",
+    "Mlevel": 1,
+    "Murl": null,
+    "Sort": "0",
+    "Mvisible": 1,
+    "Ico": "IMGAES/SEL.GIF",
+    "Mparent": "0"
+  },
+  {
+    "Mflag": "QXGL",
+    "Mname": "权限管理",
+    "Murl": null,
+    "Mlevel": 2,
+    "Sort": "190000",
+    "Mvisible": 1,
+    "Ico": "image/left/权限管理.png",
+    "Mparent": "1"
+  },
+  {
+    "Mflag": "yhgl",
+    "Mname": "用户管理",
+    "Murl": "admin/AdminUser",
+    "Mlevel": 3,
+    "Sort": "191000",
+    "Mvisible": 1,
+    "Ico": "image/left/arrow.png",
+    "Mparent": "2"
+  },
+  {
+    "Mflag": "jsgl",
+    "Mname": "角色管理",
+    "Murl": "admin/AdminRole",
+    "Mlevel": 3,
+    "Sort": "192000",
+    "Mvisible": 1,
+    "Ico": "image/left/arrow.png",
+    "Mparent": "2"
+  },
+  {
+    "Mflag": "qxsh",
+    "Mname": "权限审核",
+    "Murl": "admin/AdminApproval",
+    "Mlevel": 3,
+    "Sort": "193000",
+    "Mvisible": 1,
+    "Ico": null,
+    "Mparent": "2"
+  }
+]

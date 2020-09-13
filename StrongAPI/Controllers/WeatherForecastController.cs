@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Strong.Model.Dtos;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Strong.API.Controllers
 {
     /// <summary>
     /// 测试接口
     /// </summary>
- 
+
     [Route("WeatherForecast")]
     [ApiController]
 
@@ -58,7 +57,7 @@ namespace Strong.API.Controllers
         /// <returns></returns>
         [HttpPut]
         [Authorize(Roles = "Client")]
- 
+
         public IEnumerable<WeatherForecast> GetB()
         {
             var rng = new Random();
@@ -76,11 +75,11 @@ namespace Strong.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        [Authorize(Roles="Admin")]
+        [Authorize(Roles = "Admin")]
         public object GetC()
         {
             var rng = new Random();
-            var a =   Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            var a = Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateTime.Now.AddDays(index),
                 Temperature = rng.Next(-20, 55),

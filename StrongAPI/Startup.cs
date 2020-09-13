@@ -1,5 +1,4 @@
 using Autofac;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +6,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Strong.API.Filter;
@@ -16,14 +14,7 @@ using Strong.Common.Redis;
 using Strong.Entities.Seed;
 using Strong.Extensions.Middlewares;
 using Strong.Extensions.ServiceExtensions;
-using Swashbuckle.AspNetCore.Filters;
-
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 
 
 namespace StrongAPI
@@ -51,7 +42,7 @@ namespace StrongAPI
             Env = env;
         }
 
-        
+
 
         /// <summary>
         /// 用于注册services服务（第三方，EF，identity等）到容器中，使Configure可以使用这些服务
@@ -62,9 +53,8 @@ namespace StrongAPI
         {
 
             //读取配置文件
-            services.AddSingleton(new Appsettings(Configuration));
-            services.AddSingleton<IRedisCacheManager, RedisCacheManager>();
-
+            services.AddSingleton(new Appsettings(Configuration)); 
+            services.AddTransient<IRedisCacheManager, RedisCacheManager>();
             var symmetricKeyAsBase64 = AppSecretConfig.Audience_Secret_String;
             var keyByteArray = Encoding.ASCII.GetBytes(symmetricKeyAsBase64);
             var signingKey = new SymmetricSecurityKey(keyByteArray);
@@ -98,7 +88,7 @@ namespace StrongAPI
                 //不使用驼峰样式的key
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
                 //设置时间格式
-                options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss" ;
+                options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss";
             });
 
             _services = services;
@@ -145,11 +135,8 @@ namespace StrongAPI
             }
             #endregion
 
-            #region Swagger
             // 封装Swagger
             app.UseSwaggerMildd();
-            #endregion
-
 
             // CORS跨域
             app.UseCors(Appsettings.app(new string[] { "Startup", "Cors", "PolicyName" }));
@@ -175,8 +162,6 @@ namespace StrongAPI
             {
                 endpoints.MapControllers();
             });
-
-
 
             app.UseSeedDataMildd(myContext, Env.WebRootPath);
         }

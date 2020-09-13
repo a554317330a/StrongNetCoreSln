@@ -1,12 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Strong.API.AuthHelper;
 using Strong.Common.Redis;
-using Strong.Entities;
 using Strong.Entities.DBModel;
 using Strong.IBussiness;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Strong.API.Controllers
@@ -15,13 +12,13 @@ namespace Strong.API.Controllers
     [Route("")]
     public class AccountController : ControllerBase
     {
-        readonly ITBApilogBussiness _iTBApilogBussiness;
-        private readonly IRedisCacheManager  redis;
-        public AccountController(ITBApilogBussiness _iTBApilogBussiness, IRedisCacheManager _redis)
-        {
-            this._iTBApilogBussiness = _iTBApilogBussiness;
-            this.redis = _redis;
-        }
+        //readonly ITB_ApilogBussiness _iTBApilogBussiness;
+        private readonly IRedisCacheManager redis;
+        //public AccountController(ITB_ApilogBussiness _iTBApilogBussiness, IRedisCacheManager _redis)
+        //{
+        //    this._iTBApilogBussiness = _iTBApilogBussiness;
+        //    this.redis = _redis;
+        //}
         [HttpGet]
         public async Task<object> Login(string name, string pwd)
         {
@@ -42,19 +39,20 @@ namespace Strong.API.Controllers
                 jwtStr = "login fail!!!";
             }
 
-            return  Ok(new
+            return Ok(new
             {
                 success = suc,
                 token = jwtStr
             });
         }
- 
+
         [HttpGet]
-        public async Task<List<TbApilog>> Get(int id=1)
+        public async Task<List<TB_Apilog>> Get(int id = 1)
         {
             //IAdvertisementServices advertisementServices = new AdvertisementServices();//需要引用两个命名空间Blog.Core.IServices;Blog.Core.Services;
 
-            return await _iTBApilogBussiness.QueryAsync(d => d.Logid == id);
+            //return await _iTBApilogBussiness.QueryAsync(d => d.Logid == id);
+            return null;
         }
 
     }

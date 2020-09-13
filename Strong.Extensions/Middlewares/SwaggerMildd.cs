@@ -2,10 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Strong.Common;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 using static Strong.Extensions.ServiceExtensions.CustomApiVersion;
 
 namespace Strong.Extensions.Middlewares
@@ -17,7 +14,7 @@ namespace Strong.Extensions.Middlewares
         {
             if (app == null) throw new ArgumentNullException(nameof(app));
 
- 
+
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
