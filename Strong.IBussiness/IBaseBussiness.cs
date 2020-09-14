@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Strong.IBussiness
 {
-    public interface  IBaseBussiness<TEntity,TKey> where  TEntity :class,new()
+    public interface IBaseBussiness<TEntity> where TEntity : class, new()
     {
 
 
@@ -21,14 +20,14 @@ namespace Strong.IBussiness
         #endregion
 
         #region 删除数据
-        bool Delete(TKey id);
+        bool Delete(int id);
         bool Delete(TEntity entity);
-        bool Delete(TKey[] ids);
+        bool Delete(int[] ids);
         bool Delete(List<TEntity> entitys);
         bool Delete(Expression<Func<TEntity, bool>> whereExpression);
-        Task<bool> DeleteAsync(TKey id);
+        Task<bool> DeleteAsync(int id);
         Task<bool> DeleteAsync(TEntity entity);
-        Task<bool> DeleteAsync(TKey[] ids);
+        Task<bool> DeleteAsync(int[] ids);
         Task<bool> DeleteAsync(List<TEntity> entitys);
         Task<bool> DeleteAsync(Expression<Func<TEntity, bool>> whereExpression);
         #endregion
@@ -60,7 +59,7 @@ namespace Strong.IBussiness
         /// <param name="objId"></param>
         /// <param name="blnUseCache"></param>
         /// <returns></returns>
-        TEntity Query(TKey id);
+        TEntity Query(int id);
         /// <summary>
         /// 查询所有数据
         /// </summary>
@@ -132,7 +131,7 @@ namespace Strong.IBussiness
         /// <param name="id"></param>
         /// <param name="blnUseCache"></param>
         /// <returns></returns>
-        Task<TEntity> QueryAsync(TKey id);
+        Task<TEntity> QueryAsync(int id);
         /// <summary>
         /// 查询所有数据（异步）
         /// </summary>

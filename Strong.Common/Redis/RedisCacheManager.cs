@@ -1,18 +1,14 @@
 ﻿using CSRedis;
-using Microsoft.Extensions.Configuration;
-using StackExchange.Redis;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Strong.Common.Redis
 {
     public class RedisCacheManager : IRedisCacheManager
-    {            
+    {
 
         private readonly string redisConnenctionString;
 
-        public  CSRedisClient redisConnection;
+        public CSRedisClient redisConnection;
 
         private readonly object redisConnectionLock = new object();
 
@@ -32,7 +28,7 @@ namespace Strong.Common.Redis
         /// 核心代码，获取连接实例
         /// </summary>
         /// <returns></returns>
-        private  CSRedisClient GetRedisConnection()
+        private CSRedisClient GetRedisConnection()
         {
             //如果已经连接实例，直接返回
             if (this.redisConnection != null)
@@ -50,7 +46,7 @@ namespace Strong.Common.Redis
                 try
                 {
                     this.redisConnection = new CSRedisClient(redisConnenctionString);
-                   
+
                 }
                 catch (Exception)
                 {
@@ -59,7 +55,7 @@ namespace Strong.Common.Redis
             }
             return this.redisConnection;
         }
-   
+
         /// <summary>
         /// 判断是否存在
         /// </summary>
@@ -89,7 +85,7 @@ namespace Strong.Common.Redis
         public TEntity Get<TEntity>(string key)
         {
             var value = redisConnection.Get<TEntity>(key);
-            if (value!=null)
+            if (value != null)
             {
                 //需要用的反序列化，将Redis存储的Byte[]，进行反序列化
                 return value;

@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using SqlSugar;
-using Strong.Common;
+﻿using SqlSugar;
 using System;
 
 namespace Strong.Repository
@@ -11,7 +9,7 @@ namespace Strong.Repository
 
         private static string _connectionString;
         private static DbType _dbType;
-        private SqlSugarClient _db; 
+        private SqlSugarClient _db;
 
         /// <summary>
         /// 连接字符串 
@@ -252,5 +250,5 @@ namespace Strong.Repository
 
 
 
-     
+
 }

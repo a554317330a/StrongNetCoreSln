@@ -1,0 +1,12 @@
+﻿@Model.usingstr
+using SqlSugar;
+using System;
+using System.Collections.Generic;
+namespace @Model.ClassNamespace
+{
+	public interface I@(Model.Name)Repository : IBaseRepository<@(Model.Name)>
+	{
+ 
+
+	}
+}

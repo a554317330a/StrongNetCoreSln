@@ -3,17 +3,16 @@ using RazorEngine.Templating;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace Strong.Common
 {
 
 
-   
+
     public static class CreateMethods
     {
         public static string SolutionName = Appsettings.app(new string[] { "AppSettings", "ProjectName" });
-          public static Dictionary<string, string> ProjectIds = new Dictionary<string, string>();
+        public static Dictionary<string, string> ProjectIds = new Dictionary<string, string>();
         public static string GetCurrentProjectPath
         {
 
@@ -51,21 +50,21 @@ namespace Strong.Common
                     usingstr = usingstr
                 };
                 var result = Engine.Razor.RunCompile(template, templateKey, model.GetType(), model);
-                if (classNamespace == "YunTuCore.IBussiness" || classNamespace == "YunTuCore.IRepository")
+                if (classNamespace == "Strong.IBussiness" || classNamespace == "Strong.IRepository")
                 {
                     tables = "I" + tables;
                 }
                 var cp = savePath + "\\" + tables + $"{suffix}.cs";
                 if (FileHelper.IsExistFile(cp) == false)
                     FileHelper.CreateFile(cp, result, System.Text.Encoding.UTF8);
-                return $"{suffix}生成成功";
+                return $"{tables}{suffix}生成成功\n";
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                return $"{suffix}生成失败";
+                return $"{suffix}生成失败/n";
             }
-        }
+         }
 
         /// <summary>
         /// 生成底层逻辑

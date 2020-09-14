@@ -1,14 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
-using Microsoft.Extensions.DependencyInjection;
-using Autofac.Extensions.DependencyInjection;
 using System.IO;
 
 namespace StrongAPI
@@ -33,16 +26,17 @@ namespace StrongAPI
         /// <param name="args"></param>
         /// <returns></returns>
         public static IHostBuilder CreateHostBuilder(string[] args) =>
-        
+
         Host.CreateDefaultBuilder(args)
         .UseServiceProviderFactory(new AutofacServiceProviderFactory())//使用AutoFac工厂
         .ConfigureWebHostDefaults(webBuilder =>
         {
-            webBuilder.UseStartup<Startup>().UseKestrel(options=> {
+            webBuilder.UseStartup<Startup>().UseKestrel(options =>
+            {
                 options.Limits.MaxConcurrentConnections = 100;
                 options.Limits.MaxConcurrentUpgradedConnections = 100;
                 options.Limits.MaxRequestBufferSize = 102400;
-                })
+            })
             .ConfigureLogging((hostingContext, builder) =>
             {
                 //过滤掉系统默认的一些日志
@@ -54,6 +48,6 @@ namespace StrongAPI
             })
             .UseUrls("https://*:8818");
         });
-         
+
     }
 }

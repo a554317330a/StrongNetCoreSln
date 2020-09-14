@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Builder;
 using Strong.Common;
 using Strong.Entities.Seed;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Strong.Extensions.Middlewares
 {
@@ -17,7 +15,7 @@ namespace Strong.Extensions.Middlewares
 
             try
             {
-               throw new Exception("出事了");
+                //生成数据库和种子数据
                 if (Appsettings.app("AppSettings", "SeedDBInit").ObjToBool())
                 {
                     DBSeed.SeedAsync(myContext, webRootPath).Wait();
@@ -26,9 +24,9 @@ namespace Strong.Extensions.Middlewares
             catch (Exception e)
             {
                 log.Error($"Error occured seeding the Database.\n{e.Message}");
-               
+
                 log.Warn($"Warn occured seeding the Database.\n{e.Message}");
-            
+
                 throw;
             }
         }

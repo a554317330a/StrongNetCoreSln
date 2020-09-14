@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Strong.Common.Redis
 {
@@ -21,6 +19,8 @@ namespace Strong.Common.Redis
         //移除某一个缓存值
         void Remove(string key);
 
-         bool SetValue(string key, byte[] value);
+
+
+        bool SetValue(string key, byte[] value);
     }
 }

@@ -6,7 +6,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Strong.API.AuthHelper
 {
@@ -21,7 +20,7 @@ namespace Strong.API.AuthHelper
             string secret = AppSecretConfig.Audience_Secret_String;
 
             //var claims = new Claim[] //old
-         var claims = new List<Claim>
+            var claims = new List<Claim>
          {
           /*
           * 特别重要：
@@ -86,7 +85,7 @@ namespace Strong.API.AuthHelper
     }
 
 
- 
+
 
     /// <summary>
     /// 令牌

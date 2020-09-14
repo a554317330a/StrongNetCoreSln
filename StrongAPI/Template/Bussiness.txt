@@ -1,0 +1,22 @@
+﻿@Model.usingstr
+using System;
+using System.Collections.Generic;
+namespace @Model.ClassNamespace
+{
+	public class @(Model.Name)Bussiness : BaseBussiness<@(Model.Name)>, I@(Model.Name)Bussiness
+	{
+ 
+	//当前类已经继承了增、删、查、改的方法
+
+	//这里面写的代码不会给覆盖,如果要重新生成请删除 @(Model.Name)Bussiness.cs
+
+
+	I@(Model.Name)Repository  _dal;
+        public @(Model.Name)Bussiness(I@(Model.Name)Repository dal)
+        {
+            this._dal = dal;
+            base.BaseDal = dal;
+        }
+ 
+	}
+}

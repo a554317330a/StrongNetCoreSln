@@ -1,0 +1,18 @@
+﻿[
+  {
+    "Loginname": "admin",
+    "Pwd": "3FDF452F4413567B3BEC3F0FF4110315",
+    "Realname": "系统管理员",
+    "Sex": "男",
+    "Tel": "13535254374",
+    "Unit": "",
+    "Duty": "",
+    "Email": "554317330@qq.com",
+    "Issysadmin": 1,
+    "Memo": "",
+    "Createuid": 0,
+    "Sort": 1,
+    "Unitid": null,
+    "Bhavelog": null
+  }
+]

@@ -1,20 +1,16 @@
 ﻿
 using SqlSugar;
-using Strong.Entities;
 using Strong.IRepository;
-using Strong.Repository;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
 
 namespace Strong.Repository
 {
-    public abstract class BaseRepository<TEntity,TKey> : IBaseRepository<TEntity,TKey> where TEntity : class, new()
+    public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class, new()
     {
         private DbContext context;
         private SqlSugarClient db;
@@ -45,7 +41,7 @@ namespace Strong.Repository
 
         public int Add(TEntity model)
         {
-           return db.Insertable<TEntity>(model).ExecuteReturnIdentity() ;
+            return db.Insertable<TEntity>(model).ExecuteReturnIdentity();
         }
 
         public int Add(List<TEntity> model)
@@ -66,7 +62,7 @@ namespace Strong.Repository
 
         public async Task<int> AddAsync(TEntity entity, Expression<Func<TEntity, object>> insertColumns = null)
         {
-           var i = await db.Insertable<TEntity>(entity).InsertColumns(insertColumns).ExecuteReturnIdentityAsync();
+            var i = await db.Insertable<TEntity>(entity).InsertColumns(insertColumns).ExecuteReturnIdentityAsync();
             return i;
         }
 
@@ -76,10 +72,10 @@ namespace Strong.Repository
             return i;
         }
 
-        public bool Delete(TKey id)
+        public bool Delete(int id)
         {
-            return db.Deleteable<TEntity>(id).ExecuteCommand()>0;
-            
+            return db.Deleteable<TEntity>(id).ExecuteCommand() > 0;
+
         }
 
         public bool Delete(TEntity entity)
@@ -87,7 +83,7 @@ namespace Strong.Repository
             return db.Deleteable<TEntity>(entity).ExecuteCommand() > 0;
         }
 
-        public bool Delete(TKey[] ids)
+        public bool Delete(int[] ids)
         {
             return db.Deleteable<TEntity>().In(ids).ExecuteCommand() > 0;
         }
@@ -102,18 +98,18 @@ namespace Strong.Repository
             return db.Deleteable<TEntity>().Where(whereExpression).ExecuteCommand() > 0;
         }
 
-        public async Task<bool> DeleteAsync(TKey id)
+        public async Task<bool> DeleteAsync(int id)
         {
             return await db.Deleteable<TEntity>(id).ExecuteCommandAsync() > 0; ;
         }
 
         public async Task<bool> DeleteAsync(TEntity entity)
         {
-            return await  db.Deleteable(entity).ExecuteCommandAsync()>0;
-            
+            return await db.Deleteable(entity).ExecuteCommandAsync() > 0;
+
         }
 
-        public async Task<bool> DeleteAsync(TKey[] ids)
+        public async Task<bool> DeleteAsync(int[] ids)
         {
             var i = await db.Deleteable<TEntity>().In(ids).ExecuteCommandAsync();
             return i > 0;
@@ -127,13 +123,13 @@ namespace Strong.Repository
 
         public async Task<bool> DeleteAsync(Expression<Func<TEntity, bool>> whereExpression)
         {
-            var i = await  db.Deleteable<TEntity>().Where(whereExpression).ExecuteCommandAsync();
+            var i = await db.Deleteable<TEntity>().Where(whereExpression).ExecuteCommandAsync();
             return i > 0;
         }
 
-        public  bool Update(TEntity entity)
+        public bool Update(TEntity entity)
         {
-            return  db.Updateable(entity).ExecuteCommand()>0;
+            return db.Updateable(entity).ExecuteCommand() > 0;
         }
 
         public bool Update(TEntity entity, params string[] columns)
@@ -173,16 +169,16 @@ namespace Strong.Repository
         }
         #region 查询
 
-       
+
         public TEntity FindWhere(Expression<Func<TEntity, bool>> whereExpression)
         {
-            return db.Queryable<TEntity>().WhereIF(whereExpression!=null, whereExpression).First();
+            return db.Queryable<TEntity>().WhereIF(whereExpression != null, whereExpression).First();
         }
 
-        public TEntity Query(TKey id)
+        public TEntity Query(int id)
         {
-          
-            return entityDB.GetById(id); 
+
+            return entityDB.GetById(id);
         }
 
         public List<TEntity> Query()
@@ -202,13 +198,13 @@ namespace Strong.Repository
 
         public List<TEntity> Query(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression, bool isAsc = true)
         {
-            return  db.Queryable<TEntity>().OrderByIF(orderByExpression != null, orderByExpression, isAsc ? OrderByType.Asc : OrderByType.Desc).WhereIF(whereExpression != null, whereExpression).ToList();
+            return db.Queryable<TEntity>().OrderByIF(orderByExpression != null, orderByExpression, isAsc ? OrderByType.Asc : OrderByType.Desc).WhereIF(whereExpression != null, whereExpression).ToList();
         }
 
         public List<TEntity> Query(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression, int intTop, bool isAsc = true)
         {
 
-            return  db.Queryable<TEntity>().OrderByIF(orderByExpression!=null, orderByExpression, isAsc?OrderByType.Asc:OrderByType.Desc).WhereIF(whereExpression != null, whereExpression).Take(intTop).ToList();
+            return db.Queryable<TEntity>().OrderByIF(orderByExpression != null, orderByExpression, isAsc ? OrderByType.Asc : OrderByType.Desc).WhereIF(whereExpression != null, whereExpression).Take(intTop).ToList();
 
         }
 
@@ -236,7 +232,7 @@ namespace Strong.Repository
             return await db.Queryable<TEntity>().Where(whereExpression).FirstAsync();
         }
 
-        public async Task<TEntity> QueryAsync(TKey id)
+        public async Task<TEntity> QueryAsync(int id)
         {
             return await Task.Run(() => entityDB.GetById(id));
         }
@@ -248,17 +244,17 @@ namespace Strong.Repository
 
         public async Task<List<TEntity>> QueryAsync(Expression<Func<TEntity, bool>> whereExpression)
         {
-            return await db.Queryable<TEntity>().WhereIF(whereExpression!=null, whereExpression).ToListAsync();
+            return await db.Queryable<TEntity>().WhereIF(whereExpression != null, whereExpression).ToListAsync();
         }
 
         public async Task<List<TEntity>> QueryAsync(Expression<Func<TEntity, bool>> whereExpression, string strOrderByFileds)
         {
-            return await db.Queryable<TEntity>().OrderByIF(!string.IsNullOrEmpty(strOrderByFileds),strOrderByFileds).WhereIF(whereExpression != null, whereExpression).ToListAsync();
+            return await db.Queryable<TEntity>().OrderByIF(!string.IsNullOrEmpty(strOrderByFileds), strOrderByFileds).WhereIF(whereExpression != null, whereExpression).ToListAsync();
         }
 
         public async Task<List<TEntity>> QueryAsync(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression, bool isAsc = true)
         {
-            return await db.Queryable<TEntity>().OrderByIF(null!=orderByExpression, orderByExpression, isAsc?OrderByType.Asc:OrderByType.Desc).WhereIF(whereExpression != null, whereExpression).ToListAsync();
+            return await db.Queryable<TEntity>().OrderByIF(null != orderByExpression, orderByExpression, isAsc ? OrderByType.Asc : OrderByType.Desc).WhereIF(whereExpression != null, whereExpression).ToListAsync();
 
         }
 
@@ -287,10 +283,10 @@ namespace Strong.Repository
 
         public async Task<int> GetTotalAsync(Expression<Func<TEntity, bool>> whereExpression)
         {
-            return await Task.Run(()=> entityDB.Count(whereExpression)) ;
+            return await Task.Run(() => entityDB.Count(whereExpression));
         }
 
-      
+
 
         public async Task<DataTable> SqlQueryAsync(string sql)
         {
