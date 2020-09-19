@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Strong.Extensions.ServiceExtensions
 {
-    public class HttpContextSetup
+    public static class HttpContextSetup
     {
 
         public static void AddHttpContextSetup(this IServiceCollection services)
@@ -12,7 +14,7 @@ namespace Strong.Extensions.ServiceExtensions
             if (services == null) throw new ArgumentNullException(nameof(services));
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped<IUser, AspNetUser>();
+            //services.AddScoped<IUser, AspNetUser>();
         }
 
     }
