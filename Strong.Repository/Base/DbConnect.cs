@@ -1,7 +1,9 @@
 ﻿using SqlSugar;
+using Strong.Common;
 using System;
+using System.Threading.Tasks;
 
-namespace Strong.Repository
+namespace Strong.Repository.Base
 {
 
     public class DbContext
@@ -93,6 +95,20 @@ namespace Strong.Repository
                 {
                     //DataInfoCacheService = new HttpRuntimeCache()
                 },
+                AopEvents = new AopEvents
+                {
+                    OnLogExecuting = (sql, p) =>
+                    {
+                        if (Appsettings.app(new string[] { "AppSettings", "SqlAOP", "Enabled" }).ObjToBool())
+                        {
+                            Parallel.For(0, 1, e =>
+                            {
+                                Console.WriteLine("SQL：", GetParas(p) + "【SQL语句】：" + sql);
+                                 
+                            });
+                        }
+                    }
+                },
                 MoreSettings = new ConnMoreSettings()
                 {
                     //IsWithNoLockQuery = true,
@@ -165,7 +181,16 @@ namespace Strong.Repository
         #endregion
 
         #region 静态方法
+        private static string GetParas(SugarParameter[] pars)
+        {
+            string key = "【SQL参数】：";
+            foreach (var param in pars)
+            {
+                key += $"{param.ParameterName}:{param.Value}\n";
+            }
 
+            return key;
+        }
         /// <summary>
         /// 功能描述:获得一个DbContext
         /// </summary>

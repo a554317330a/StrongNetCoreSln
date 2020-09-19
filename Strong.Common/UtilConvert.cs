@@ -151,21 +151,7 @@ namespace Strong.Common
             }
             return errorValue;
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="thisValue"></param>
-        /// <returns></returns>
-        public static bool ObjToBool(this object thisValue)
-        {
-            bool reval = false;
-            if (thisValue != null && thisValue != DBNull.Value && bool.TryParse(thisValue.ToString(), out reval))
-            {
-                return reval;
-            }
-            return reval;
-        }
-
+       
 
         /// <summary>
         /// 获取当前时间的时间戳

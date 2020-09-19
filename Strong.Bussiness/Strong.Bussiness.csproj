@@ -9,8 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Strong.Extensions\Strong.Extensions.csproj" />
     <ProjectReference Include="..\Strong.IBussiness\Strong.IBussiness.csproj" />
-    <ProjectReference Include="..\Strong.IRepository\Strong.IRepository.csproj" />
     <ProjectReference Include="..\Strong.Repository\Strong.Repository.csproj" />
   </ItemGroup>
  

@@ -1,5 +1,6 @@
 ﻿using Strong.IBussiness;
-using Strong.IRepository;
+using Strong.IRepository.Base;
+using Strong.Repository;
 using System;
 using System.Collections.Generic;
 using System.Data;

@@ -2,6 +2,7 @@
 using Strong.API.AuthHelper;
 using Strong.Common.Redis;
 using Strong.Entities.DBModel;
+using Strong.Extensions.AttributeExt;
 using Strong.IBussiness;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -12,13 +13,15 @@ namespace Strong.API.Controllers
     [Route("")]
     public class AccountController : ControllerBase
     {
-        //readonly ITB_ApilogBussiness _iTBApilogBussiness;
-        private readonly IRedisCacheManager redis;
-        //public AccountController(ITB_ApilogBussiness _iTBApilogBussiness, IRedisCacheManager _redis)
-        //{
-        //    this._iTBApilogBussiness = _iTBApilogBussiness;
-        //    this.redis = _redis;
-        //}
+        readonly ITB_ApilogBussiness _iTBApilogBussiness;
+        readonly ITB_UserBussiness _UserBussiness;
+ 
+        public AccountController(ITB_ApilogBussiness _iTBApilogBussiness,ITB_UserBussiness _userBussiness )
+        {
+            this._iTBApilogBussiness = _iTBApilogBussiness;
+            this._UserBussiness = _userBussiness;
+ 
+        }
         [HttpGet]
         public async Task<object> Login(string name, string pwd)
         {
@@ -46,14 +49,31 @@ namespace Strong.API.Controllers
             });
         }
 
-        [HttpGet]
-        public async Task<List<TB_Apilog>> Get(int id = 1)
+        [HttpGet] 
+        public async Task<string> Get(int id = 1)
         {
             //IAdvertisementServices advertisementServices = new AdvertisementServices();//需要引用两个命名空间Blog.Core.IServices;Blog.Core.Services;
 
             //return await _iTBApilogBussiness.QueryAsync(d => d.Logid == id);
-            return null;
+
+           var list = _UserBussiness.Query();
+            var liststr = Newtonsoft.Json.JsonConvert.SerializeObject(list);
+            return liststr;
         }
 
+
+
+        [HttpGet]
+        
+        public async Task<string> Getbredis(int id = 1)
+        {
+            //IAdvertisementServices advertisementServices = new AdvertisementServices();//需要引用两个命名空间Blog.Core.IServices;Blog.Core.Services;
+
+            //return await _iTBApilogBussiness.QueryAsync(d => d.Logid == id);
+
+            var list = _UserBussiness.getbyredis();
+            var liststr = Newtonsoft.Json.JsonConvert.SerializeObject(list);
+            return liststr;
+        }
     }
 }

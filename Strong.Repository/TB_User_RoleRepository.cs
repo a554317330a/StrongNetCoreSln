@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 namespace Strong.Repository
 {
-	public class TB_User_RoleRepository : BaseRepository<TB_User_Role>, ITB_User_RoleRepository
+	public class TB_User_RoleRepository : BaseRepository<TB_User_Role>
 	{
  
 	

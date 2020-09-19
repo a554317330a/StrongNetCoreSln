@@ -1,5 +1,6 @@
 ﻿using log4net;
 using Microsoft.AspNetCore.Builder;
+using SqlSugar;
 using Strong.Common;
 using Strong.Entities.Seed;
 using System;
