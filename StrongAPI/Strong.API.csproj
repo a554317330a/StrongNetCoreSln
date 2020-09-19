@@ -82,6 +82,10 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Log\" />
+  </ItemGroup>
+
   <ProjectExtensions><VisualStudio><UserProperties wwwroot_4strong_1data_1json_4tb_3role_1tsv__JsonSchema="http://json.schemastore.org/apibuilder.json" /></VisualStudio></ProjectExtensions>
 
 

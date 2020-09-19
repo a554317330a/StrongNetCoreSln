@@ -39,9 +39,13 @@ namespace StrongAPI
             })
             .ConfigureLogging((hostingContext, builder) =>
             {
+
                 //过滤掉系统默认的一些日志
-                builder.AddFilter("System", LogLevel.Error);
-                builder.AddFilter("Microsoft", LogLevel.Error);
+                //builder.AddFilter("System", LogLevel.Error);
+                //builder.AddFilter("Microsoft", LogLevel.Error);
+                builder.ClearProviders();
+                builder.AddConsole();
+                builder.AddDebug();
                 //可配置文件
                 var path = Path.Combine(Directory.GetCurrentDirectory(), "Log4net.config");
                 builder.AddLog4Net(path);

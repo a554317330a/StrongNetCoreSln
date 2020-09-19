@@ -12,13 +12,13 @@ namespace Strong.API.Controllers
     [Route("")]
     public class AccountController : ControllerBase
     {
-        //readonly ITB_ApilogBussiness _iTBApilogBussiness;
+        readonly ITB_ApilogBussiness _iTBApilogBussiness;
         private readonly IRedisCacheManager redis;
-        //public AccountController(ITB_ApilogBussiness _iTBApilogBussiness, IRedisCacheManager _redis)
-        //{
-        //    this._iTBApilogBussiness = _iTBApilogBussiness;
-        //    this.redis = _redis;
-        //}
+        public AccountController(ITB_ApilogBussiness _iTBApilogBussiness, IRedisCacheManager _redis)
+        {
+            this._iTBApilogBussiness = _iTBApilogBussiness;
+            this.redis = _redis;
+        }
         [HttpGet]
         public async Task<object> Login(string name, string pwd)
         {

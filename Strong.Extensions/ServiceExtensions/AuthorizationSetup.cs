@@ -16,7 +16,7 @@ namespace Strong.Extensions.ServiceExtensions
             // 1、这个很简单，其他什么都不用做， 只需要在API层的controller上边，增加特性即可
             // [Authorize(Roles = "Admin,System")]
 
-            //todo这里到时候继承一个父类控制器，然后父类控制器使用All
+            //todo 这里到时候继承一个父类控制器，然后父类控制器使用All
 
             //var allrole = new TB_ROLEBLL().Query().Select(o => o.RNAME).ToArray();
             var allrole = new List<string>();
