@@ -37,6 +37,7 @@ namespace StrongAPI
                 options.Limits.MaxConcurrentUpgradedConnections = 100;
                 options.Limits.MaxRequestBufferSize = 102400;
             })
+            //配置日志接口
             .ConfigureLogging((hostingContext, builder) =>
             {
 

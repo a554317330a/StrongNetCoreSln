@@ -1,8 +1,16 @@
 ﻿using Autofac;
+using Autofac.Extras.DynamicProxy;
 using log4net;
+using SqlSugar;
+using Strong.Common;
+using Strong.Extensions.AOP;
+using Strong.IRepository.Base;
+using Strong.Repository.Base;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+ 
 
 namespace Strong.Extensions.ServiceExtensions
 {
@@ -18,16 +26,33 @@ namespace Strong.Extensions.ServiceExtensions
             var servicesDllFile = Path.Combine(basePath, "Strong.Bussiness.dll");//获取注入项目绝对路径
             var repositoryDllFile = Path.Combine(basePath, "Strong.Repository.dll");//获取注入项目绝对路径
 
+
+            // AOP 开关，如果想要打开指定的功能，只需要在 appsettigns.json 对应对应 true 就行。
+            var cacheType = new List<Type>();
+            if (Appsettings.app(new string[] { "AppSettings", "RedisCachingAOP", "Enabled" }).ObjToBool())
+            {
+                builder.RegisterType<RedisCacheAOP>();
+                cacheType.Add(typeof(RedisCacheAOP));
+            }
+            //if (Appsettings.app(new string[] { "AppSettings", "TranAOP", "Enabled" }).ObjToBool())
+            //{
+            //    builder.RegisterType<BlogTranAOP>();
+            //    cacheType.Add(typeof(BlogTranAOP));
+            //}
+             builder.RegisterGeneric(typeof(BaseRepository<>)).As(typeof(IBaseRepository<>)).InstancePerDependency();//注册仓储
             try
             {
 
                 // Service.dll 注入，有对应接口
                 var assemblysServices = Assembly.LoadFile(servicesDllFile);
-                builder.RegisterAssemblyTypes(assemblysServices).AsImplementedInterfaces();//指定已扫描程序集中的类型注册为提供所有其实现的接口。
-               
+                builder.RegisterAssemblyTypes(assemblysServices).AsImplementedInterfaces()
+                        .InstancePerDependency()
+                      .EnableInterfaceInterceptors()//引用Autofac.Extras.DynamicProxy;
+                      .InterceptedBy(cacheType.ToArray());//允许将拦截器服务的列表分配给注册。;//指定已扫描程序集中的类型注册为提供所有其实现的接口。
+
                 //Repository.dll 注入，有对应接口
                 var assemblysRepository = Assembly.LoadFile(repositoryDllFile);
-                builder.RegisterAssemblyTypes(assemblysRepository).AsImplementedInterfaces();
+                builder.RegisterAssemblyTypes(assemblysRepository).AsImplementedInterfaces().InstancePerDependency();
 
             }
             catch (Exception ex)

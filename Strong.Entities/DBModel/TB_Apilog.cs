@@ -4,7 +4,7 @@ using System;
 namespace Strong.Entities.DBModel
 {
     [SugarTable("TB_ApiLog", "调用日志表")]
-    public partial class TB_Apilog
+    public class TB_Apilog
     {
         [SugarColumn(IsPrimaryKey = true, IsIdentity = true, ColumnDescription = "主键ID")]
         public int Logid { get; set; }

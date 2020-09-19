@@ -27,6 +27,7 @@ namespace StrongAPI
         public IConfiguration Configuration { get; }
         public IWebHostEnvironment Env { get; }
         private IServiceCollection _services;
+        
         /// <summary>
         /// API名称
         /// </summary>
@@ -54,11 +55,9 @@ namespace StrongAPI
 
             //读取配置文件
             services.AddSingleton(new Appsettings(Configuration)); 
-            services.AddTransient<IRedisCacheManager, RedisCacheManager>();
-            var symmetricKeyAsBase64 = AppSecretConfig.Audience_Secret_String;
-            var keyByteArray = Encoding.ASCII.GetBytes(symmetricKeyAsBase64);
-            var signingKey = new SymmetricSecurityKey(keyByteArray);
-            var basePath = Microsoft.DotNet.PlatformAbstractions.ApplicationEnvironment.ApplicationBasePath;
+
+            services.AddSingleton<IRedisCacheManager, RedisCacheManager>();//单例Redis缓存,必须单例的哦，不然会爆--https://www.cnblogs.com/JulianHuang/p/11541658.html
+
             //种子数据
             services.AddDbSetup();
             //跨域
@@ -76,7 +75,7 @@ namespace StrongAPI
                 //全局控制器方法过滤
                 o.Filters.Add(new ActionFilter());
                 // 全局异常过滤
-                o.Filters.Add(new ExceptionFilter());
+                //o.Filters.Add(new ExceptionFilter());
                 // 全局路由前缀，统一修改路由
                 o.Conventions.Insert(0, new GlobalRoutePrefixFilter(new RouteAttribute(RoutePrefix.Name)));
             })

@@ -1,6 +1,6 @@
 ﻿
 using SqlSugar;
-using Strong.IRepository;
+using Strong.IRepository.Base;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -8,9 +8,9 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 
-namespace Strong.Repository
+namespace Strong.Repository.Base
 {
-    public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class, new()
+    public  class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class, new()
     {
         private DbContext context;
         private SqlSugarClient db;

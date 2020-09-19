@@ -1,6 +1,6 @@
 ﻿using Strong.Common;
 
-namespace Strong.Repository
+namespace Strong.Repository.Base
 {
     public static class BaseDBConfig
     {

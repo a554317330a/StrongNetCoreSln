@@ -17,7 +17,7 @@ namespace Strong.API.Filter
         //}
         public void OnException(ExceptionContext context)
         {
-            throw new NotImplementedException();
+            Console.WriteLine(context);
         }
     }
 }
