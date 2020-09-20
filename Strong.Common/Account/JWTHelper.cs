@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿
+using Microsoft.IdentityModel.Tokens;
 using Strong.Common;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 
-namespace Strong.API.AuthHelper
+namespace Strong.Common.Account
 {
     public class JWTHelper
     {
@@ -18,16 +19,8 @@ namespace Strong.API.AuthHelper
             string iss = Appsettings.app(new string[] { "Audience", "Issuer" });// 颁发者
             string aud = Appsettings.app(new string[] { "Audience", "Audience" });//使用者
             string secret = AppSecretConfig.Audience_Secret_String;
-
-            //var claims = new Claim[] //old
             var claims = new List<Claim>
          {
-          /*
-          * 特别重要：
-            1、这里将用户的部分信息，比如 uid 存到了Claim 中 ， 如果你想知道如何在其他地方将这个 uid 从 Token 中取出来，请看下边的SerializeJwt() 方法，或者在整个解决方案，搜索这个方法，看哪里使用了！
-            2、你也可以研究下 HttpContext.User.Claims ，具体的你可以看看 Policys/PermissionHandler.cs 类中是如何使用的。
-          */
-
          new Claim(JwtRegisteredClaimNames.Jti, tokenModel.Uid.ToString()),//JWT ID,JWT的唯一标识
          new Claim(JwtRegisteredClaimNames.Iat, $"{new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds()}"),//IAt颁发的时间，采用标准unix时间，用于验证过期
          new Claim(JwtRegisteredClaimNames.Nbf,$"{new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds()}") ,//处理不早于这个时间的请求
@@ -38,7 +31,7 @@ namespace Strong.API.AuthHelper
         };
 
             // 可以将一个用户的多个角色全部赋予；
-            claims.AddRange(tokenModel.Role.Split(',').Select(s => new Claim(ClaimTypes.Role, s)));
+            claims.AddRange(tokenModel.Role.Select(s => new Claim(ClaimTypes.Role, s)));
 
             //秘钥 (SymmetricSecurityKey 对安全性的要求，密钥的长度太短会报出异常)
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
@@ -63,6 +56,7 @@ namespace Strong.API.AuthHelper
         /// <returns></returns>
         public static TokenModelJwt SerializeJwt(string jwtStr)
         {
+
             var jwtHandler = new JwtSecurityTokenHandler();
             JwtSecurityToken jwtToken = jwtHandler.ReadJwtToken(jwtStr);
             object role;
@@ -72,14 +66,19 @@ namespace Strong.API.AuthHelper
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                throw;
+
+                throw e;
             }
-            var tm = new TokenModelJwt
+
+            var tm = new TokenModelJwt();
+            tm.Uid = (jwtToken.Id).ObjToInt();
+            if (role.ObjToString().Contains("["))
             {
-                Uid = (jwtToken.Id).ObjToInt(),
-                Role = role != null ? role.ObjToString() : "",
-            };
+                tm.Role = Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>>(role.ObjToString());
+            }
+
+            tm.Role = new List<string> { role.ObjToString() };
+
             return tm;
         }
     }
@@ -93,17 +92,18 @@ namespace Strong.API.AuthHelper
     public class TokenModelJwt
     {
         /// <summary>
-        /// Id
+        ///     用户Id
         /// </summary>
-        public long Uid { get; set; }
+        public int Uid { get; set; }
+
         /// <summary>
-        /// 角色
+        ///     身份
         /// </summary>
-        public string Role { get; set; }
-        /// <summary>
-        /// 职能
-        /// </summary>
-        public string Work { get; set; }
+        public List<string> Role { get; set; }
+
+      
+
+        public string NickName { get; set; }
 
     }
 }

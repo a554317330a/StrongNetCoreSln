@@ -1,6 +1,9 @@
 ﻿using Strong.Entities.DBModel;
  using Strong.IBussiness;
 using Strong.IRepository.Base;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
 namespace Strong.Bussiness
 {
 	public class TB_MenuBussiness : BaseBussiness<TB_Menu>, ITB_MenuBussiness
@@ -17,6 +20,11 @@ namespace Strong.Bussiness
             this._dal = dal;
             base.BaseDal = dal;
         }
- 
+
+
+		public async Task<List<TB_Menu>> GetRoleMenu(string strwhere) 
+		{
+			return await _dal.QueryAsync(strwhere);
+		}
 	}
 }

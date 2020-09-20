@@ -13,9 +13,9 @@
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Production"
       },
-      "applicationUrl": "https://localhost:8818",
+      "applicationUrl": "http://localhost:8818",
       "sslPort": 0
     }
   }

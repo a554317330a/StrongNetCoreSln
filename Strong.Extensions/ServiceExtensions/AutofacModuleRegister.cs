@@ -3,6 +3,7 @@ using Autofac.Extras.DynamicProxy;
 using log4net;
 using SqlSugar;
 using Strong.Common;
+using Strong.Extensions.Account;
 using Strong.Extensions.AOP;
 using Strong.IRepository.Base;
 using Strong.Repository.Base;
@@ -42,17 +43,22 @@ namespace Strong.Extensions.ServiceExtensions
              builder.RegisterGeneric(typeof(BaseRepository<>)).As(typeof(IBaseRepository<>)).InstancePerDependency();//注册仓储
             try
             {
+                // 获取 Service.dll 程序集服务，并注册
+                var assemblysServices = Assembly.LoadFrom(servicesDllFile);
+                builder.RegisterAssemblyTypes(assemblysServices)
+                          .AsImplementedInterfaces()
+                          .InstancePerDependency()
+                          .EnableInterfaceInterceptors()//引用Autofac.Extras.DynamicProxy;
+                          .InterceptedBy(cacheType.ToArray());//允许将拦截器服务的列表分配给注册。
 
-                // Service.dll 注入，有对应接口
-                var assemblysServices = Assembly.LoadFile(servicesDllFile);
-                builder.RegisterAssemblyTypes(assemblysServices).AsImplementedInterfaces()
-                        .InstancePerDependency()
-                      .EnableInterfaceInterceptors()//引用Autofac.Extras.DynamicProxy;
-                      .InterceptedBy(cacheType.ToArray());//允许将拦截器服务的列表分配给注册。;//指定已扫描程序集中的类型注册为提供所有其实现的接口。
+                // 获取 Repository.dll 程序集服务，并注册
+                var assemblysRepository = Assembly.LoadFrom(repositoryDllFile);
+                builder.RegisterAssemblyTypes(assemblysRepository)
+                       .AsImplementedInterfaces()
+                       .InstancePerDependency();
 
-                //Repository.dll 注入，有对应接口
-                var assemblysRepository = Assembly.LoadFile(repositoryDllFile);
-                builder.RegisterAssemblyTypes(assemblysRepository).AsImplementedInterfaces().InstancePerDependency();
+                builder.RegisterType<AspNetUser>().As<IUser>();
+          
 
             }
             catch (Exception ex)

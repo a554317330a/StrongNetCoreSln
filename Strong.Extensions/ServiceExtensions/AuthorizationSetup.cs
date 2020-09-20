@@ -1,14 +1,17 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Strong.Common;
+using Strong.IBussiness;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Strong.Extensions.ServiceExtensions
 {
     public static class AuthorizationSetup
     {
-        public static void AddAuthorizationSetup(this IServiceCollection services)
-        {
+        public static void AddAuthorizationSetup(this IServiceCollection services )
+          {
             if (services == null) throw new ArgumentNullException(nameof(services));
 
             // 以下四种常见的授权方式。
@@ -18,9 +21,7 @@ namespace Strong.Extensions.ServiceExtensions
 
             //todo 这里到时候继承一个父类控制器，然后父类控制器使用All
 
-            //var allrole = new TB_ROLEBLL().Query().Select(o => o.RNAME).ToArray();
-            var allrole = new List<string>();
-            allrole.Add("Admin");
+            var allrole = Appsettings.app(new string[] { "BaseConfig", "rolelist" }).Split(',');
             // 2、这个和上边的异曲同工，好处就是不用在controller中，写多个 roles 。
             // 然后这么写 [Authorize(Policy = "Admin")]
             services.AddAuthorizationCore(options =>

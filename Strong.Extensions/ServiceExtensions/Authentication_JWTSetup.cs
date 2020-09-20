@@ -44,9 +44,9 @@ namespace Strong.Extensions.ServiceExtensions
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = signingKey,
                     ValidateIssuer = true,
-                    ValidIssuer = Appsettings.app("Issuer"),//发行人
+                    ValidIssuer = Issuer,//发行人
                     ValidateAudience = true,
-                    ValidAudience = Appsettings.app("Audience"),//订阅人
+                    ValidAudience = Audience,//订阅人
                     ValidateLifetime = true,
                     ClockSkew = TimeSpan.FromSeconds(30),// 这个是缓冲过期时间，也就是说，即使我们配置了过期时间，这里也要考虑进去，过期时间 + 缓冲，默认好像是7分钟，你可以直接设置为0
                     RequireExpirationTime = true,

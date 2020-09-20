@@ -14,10 +14,11 @@ using Strong.Common.Redis;
 using Strong.Entities.Seed;
 using Strong.Extensions.Middlewares;
 using Strong.Extensions.ServiceExtensions;
+using Strong.Model.Common;
 using System.Text;
 
 
-namespace StrongAPI
+namespace Strong.API
 {
     /// <summary>
     /// 入口配置
@@ -58,12 +59,17 @@ namespace StrongAPI
 
             services.AddSingleton<IRedisCacheManager, RedisCacheManager>();//单例Redis缓存,必须单例的哦，不然会爆--https://www.cnblogs.com/JulianHuang/p/11541658.html
 
+            services.Configure<JsonConfig>(opts => Configuration.GetSection("JsonConfig").Bind(opts));
+
+
             //种子数据
             services.AddDbSetup();
             //跨域
             services.AddCorsSetup();
             //添加Swagger
             services.AddSwaggerSetup();
+
+            services.AddHttpContextSetup();
             //授权对象
             services.AddAuthorizationSetup();
             // 添加JwtBearer服务
@@ -73,7 +79,7 @@ namespace StrongAPI
             services.AddControllers(o =>
             {
                 //全局控制器方法过滤
-                o.Filters.Add(new ActionFilter());
+                o.Filters.Add(typeof(ActionFilter));
                 // 全局异常过滤
                 //o.Filters.Add(new ExceptionFilter());
                 // 全局路由前缀，统一修改路由
@@ -119,8 +125,6 @@ namespace StrongAPI
 
             // 查看注入的所有服务
             app.UseAllServicesMildd(_services);
-
-
             #region 判断环境
 
             if (env.IsDevelopment())
@@ -141,7 +145,7 @@ namespace StrongAPI
             app.UseCors(Appsettings.app(new string[] { "Startup", "Cors", "PolicyName" }));
 
             //用户构建HTTPS通道（将HTTP请求重定向到HTTPS中间件）
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             // 使用静态文件
             app.UseStaticFiles();

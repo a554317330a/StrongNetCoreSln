@@ -4,32 +4,13 @@
         <name>Strong.API</name>
     </assembly>
     <members>
-        <member name="M:Strong.API.AuthHelper.JWTHelper.SerializeJwt(System.String)">
+        <member name="M:Strong.API.Controllers.AccountController.Login(System.String,System.String,System.String,System.String)">
             <summary>
-            解析
+            获取用户信息 
             </summary>
-            <param name="jwtStr"></param>
+            <param name="username">用户名</param>
+            <param name="password">密码</param>
             <returns></returns>
-        </member>
-        <member name="T:Strong.API.AuthHelper.TokenModelJwt">
-            <summary>
-            令牌
-            </summary>
-        </member>
-        <member name="P:Strong.API.AuthHelper.TokenModelJwt.Uid">
-            <summary>
-            Id
-            </summary>
-        </member>
-        <member name="P:Strong.API.AuthHelper.TokenModelJwt.Role">
-            <summary>
-            角色
-            </summary>
-        </member>
-        <member name="P:Strong.API.AuthHelper.TokenModelJwt.Work">
-            <summary>
-            职能
-            </summary>
         </member>
         <member name="T:Strong.API.Controllers.WeatherForecastController">
             <summary>
@@ -60,64 +41,70 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:Strong.API.Filter.ActionFilter.OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
+            <summary>
+            方法前记录日志
+            </summary>
+            <param name="context"></param>
+        </member>
         <member name="F:Strong.API.Filter.GlobalRoutePrefixFilter._centralPrefix">
             <summary>
             定义一个路由前缀变量
             </summary>
         </member>
-        <member name="T:StrongAPI.Program">
+        <member name="T:Strong.API.Program">
             <summary>
             程序入口
             </summary>
         </member>
-        <member name="M:StrongAPI.Program.Main(System.String[])">
+        <member name="M:Strong.API.Program.Main(System.String[])">
             <summary>
             入口方法
             </summary>
             <param name="args"></param>
         </member>
-        <member name="M:StrongAPI.Program.CreateHostBuilder(System.String[])">
+        <member name="M:Strong.API.Program.CreateHostBuilder(System.String[])">
             <summary>
             创建Web服务器
             </summary>
             <param name="args"></param>
             <returns></returns>
         </member>
-        <member name="T:StrongAPI.Startup">
+        <member name="T:Strong.API.Startup">
             <summary>
             入口配置
             </summary>
         </member>
-        <member name="P:StrongAPI.Startup.ApiName">
+        <member name="P:Strong.API.Startup.ApiName">
             <summary>
             API名称
             </summary>
         </member>
-        <member name="M:StrongAPI.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+        <member name="M:Strong.API.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
             <summary>
             构造函数
             </summary>
             <param name="configuration"></param>
         </member>
-        <member name="M:StrongAPI.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+        <member name="M:Strong.API.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
             用于注册services服务（第三方，EF，identity等）到容器中，使Configure可以使用这些服务
             </summary>
             <param name="services"></param>
         </member>
-        <member name="T:StrongAPI.Startup.RoutePrefix">
+        <member name="T:Strong.API.Startup.RoutePrefix">
             <summary>
             路由变量前缀配置
             </summary>
         </member>
-        <member name="F:StrongAPI.Startup.RoutePrefix.Name">
+        <member name="F:Strong.API.Startup.RoutePrefix.Name">
             <summary>
             前缀名
             如果不需要，尽量留空，不要修改
             除非一定要在所有的 api 前统一加上特定前缀
             </summary>
         </member>
-        <member name="M:StrongAPI.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Strong.Entities.Seed.MyContext,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+        <member name="M:Strong.API.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Strong.Entities.Seed.MyContext,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
             <summary>
             用于配置整个HTTP请求的流程
             </summary>

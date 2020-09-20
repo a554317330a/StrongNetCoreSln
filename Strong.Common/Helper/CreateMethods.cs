@@ -7,8 +7,6 @@ using System.IO;
 namespace Strong.Common
 {
 
-
-
     public static class CreateMethods
     {
         public static string SolutionName = Appsettings.app(new string[] { "AppSettings", "ProjectName" });

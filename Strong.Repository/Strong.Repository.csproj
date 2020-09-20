@@ -10,13 +10,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="IRepository\**" />
+    <Compile Remove="Repository\**" />
+    <EmbeddedResource Remove="IRepository\**" />
+    <EmbeddedResource Remove="Repository\**" />
+    <None Remove="IRepository\**" />
+    <None Remove="Repository\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="TB_ApilogRepository.cs" />
     <Compile Remove="TB_MenuRepository.cs" />
     <Compile Remove="TB_RoleRepository.cs" />
     <Compile Remove="TB_Role_LogRepository.cs" />
     <Compile Remove="TB_Role_Log_ProcessRepository.cs" />
     <Compile Remove="TB_Role_MenuRepository.cs" />
-    <Compile Remove="TB_UserRepository.cs" />
     <Compile Remove="TB_User_RoleRepository.cs" />
   </ItemGroup>
 

@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Strong.Common
 {
@@ -41,13 +42,16 @@ namespace Strong.Common
 
                 if (sections.Any())
                 {
-                    return Configuration[string.Join(":", sections)];
+                    return  Configuration[string.Join(":", sections)];
                 }
             }
             catch (Exception ex) { }
 
             return "";
         }
+
+
+   
 
         /// <summary>
         /// 递归获取配置信息数组

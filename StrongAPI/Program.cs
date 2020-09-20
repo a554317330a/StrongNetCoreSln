@@ -4,7 +4,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.IO;
 
-namespace StrongAPI
+namespace Strong.API
 {
     /// <summary>
     /// ³ÌÐòÈë¿Ú
@@ -51,7 +51,7 @@ namespace StrongAPI
                 var path = Path.Combine(Directory.GetCurrentDirectory(), "Log4net.config");
                 builder.AddLog4Net(path);
             })
-            .UseUrls("https://*:8818");
+            .UseUrls("http://*:8818");
         });
 
     }

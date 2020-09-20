@@ -5,6 +5,9 @@ using System.Text;
 
 namespace Strong.Common
 {
+    /// <summary>
+    /// 数据加密，单层MD5
+    /// </summary>
     public class MD5Helper
     {
         /// <summary>

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Strong.Extensions.AttributeExt
+namespace Strong.Common.AttributeExt
 {
 
     /// <summary>

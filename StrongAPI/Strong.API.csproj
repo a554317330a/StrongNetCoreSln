@@ -15,6 +15,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Log\**" />
+    <Content Remove="Log\**" />
+    <EmbeddedResource Remove="Log\**" />
+    <None Remove="Log\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Template\Bussiness.txt" />
     <None Remove="Template\IBussiness.txt" />
     <None Remove="Template\IRepository.txt" />
@@ -62,6 +69,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Strong.Bussiness\Strong.Bussiness.csproj" />
     <ProjectReference Include="..\Strong.Common\Strong.Common.csproj" />
     <ProjectReference Include="..\Strong.Entities\Strong.Entities.csproj" />
     <ProjectReference Include="..\Strong.Extensions\Strong.Extensions.csproj" />
@@ -79,10 +87,6 @@
     <Content Update="wwwroot\Strong.Data.json\TB_User.tsv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Log\" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties wwwroot_4strong_1data_1json_4tb_3role_1tsv__JsonSchema="http://json.schemastore.org/apibuilder.json" /></VisualStudio></ProjectExtensions>

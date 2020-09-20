@@ -24,6 +24,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Strong.Common\Strong.Common.csproj" />
     <ProjectReference Include="..\Strong.Entities\Strong.Entities.csproj" />
+    <ProjectReference Include="..\Strong.IBussiness\Strong.IBussiness.csproj" />
     <ProjectReference Include="..\Strong.Repository\Strong.Repository.csproj" />
   </ItemGroup>
 

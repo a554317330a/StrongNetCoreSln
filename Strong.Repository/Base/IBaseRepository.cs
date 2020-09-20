@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SqlSugar;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq.Expressions;
@@ -8,6 +9,10 @@ namespace Strong.IRepository.Base
 {
     public interface IBaseRepository<TEntity> where TEntity : class, new()
     {
+
+
+ 
+
         #region 添加数据
         int Add(TEntity model);
         int Add(List<TEntity> model);
@@ -152,6 +157,12 @@ namespace Strong.IRepository.Base
         Task<List<TEntity>> QueryAsync(Expression<Func<TEntity, bool>> whereExpression, string strOrderByFileds);
 
         /// <summary>
+        /// 功能描述:查询一个列表
+        /// </summary>
+        /// <param name="strWhere">条件</param>
+        Task<List<TEntity>> QueryAsync(string strWhere);
+
+        /// <summary>
         /// 按条件查询多条（异步）
         /// </summary>
         /// <param name="whereExpression"></param>
@@ -190,6 +201,10 @@ namespace Strong.IRepository.Base
         /// <returns></returns>
         Task<int> GetTotalAsync(Expression<Func<TEntity, bool>> whereExpression);
 
+        Task<List<TResult>> QueryMuch<T, T2, T3, TResult>(
+          Expression<Func<T, T2, T3, object[]>> joinExpression,
+          Expression<Func<T, T2, T3, TResult>> selectExpression,
+          Expression<Func<T, T2, T3, bool>> whereLambda = null) where T : class, new();
 
         #endregion
 

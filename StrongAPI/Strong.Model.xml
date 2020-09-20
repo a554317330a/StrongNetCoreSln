@@ -4,6 +4,115 @@
         <name>Strong.Model</name>
     </assembly>
     <members>
+        <member name="T:Strong.Model.Common.MessageModel`1">
+            <summary>
+             通用返回信息类
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:Strong.Model.Common.MessageModel`1.success">
+            <summary>
+            操作是否成功
+            </summary>
+        </member>
+        <member name="P:Strong.Model.Common.MessageModel`1.code">
+            <summary>
+            状态码
+            </summary>
+        </member>
+        <member name="P:Strong.Model.Common.MessageModel`1.msg">
+            <summary>
+                返回信息
+            </summary>
+        </member>
+        <member name="P:Strong.Model.Common.MessageModel`1.data">
+            <summary>
+                返回数据集合
+            </summary>
+        </member>
+        <member name="T:Strong.Model.Common.TableModel`1">
+            <summary>
+            表格数据，支持分页
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:Strong.Model.Common.TableModel`1.Code">
+            <summary>
+            返回编码
+            </summary>
+        </member>
+        <member name="P:Strong.Model.Common.TableModel`1.Msg">
+            <summary>
+            返回信息
+            </summary>
+        </member>
+        <member name="P:Strong.Model.Common.TableModel`1.Count">
+            <summary>
+            记录总数
+            </summary>
+        </member>
+        <member name="P:Strong.Model.Common.TableModel`1.Data">
+            <summary>
+            返回数据集
+            </summary>
+        </member>
+        <member name="P:Strong.Model.Common.TableModel`1.RawData">
+            <summary>
+            原数据集
+            </summary>
+        </member>
+        <member name="P:Strong.Model.Common.TableModel`1.Success">
+            <summary>
+            操作是否成功
+            </summary>
+        </member>
+        <member name="P:Strong.Model.UserModel.LOGINNAME">
+            <summary>
+            Desc:登陆名
+            Default:
+            Nullable:False
+            </summary>           
+        </member>
+        <member name="P:Strong.Model.UserModel.REALNAME">
+            <summary>
+            Desc:真实名称
+            Default:
+            Nullable:False
+            </summary>           
+        </member>
+        <member name="P:Strong.Model.UserModel.UNIT">
+            <summary>
+            Desc:单位
+            Default:
+            Nullable:True
+            </summary>           
+        </member>
+        <member name="P:Strong.Model.UserModel.DUTY">
+            <summary>
+            Desc:职务
+            Default:
+            Nullable:True
+            </summary>           
+        </member>
+        <member name="P:Strong.Model.UserModel.ISSYSADMIN">
+            <summary>
+            Desc:是否超级管理员
+            Default:
+            Nullable:True
+            </summary>           
+        </member>
+        <member name="P:Strong.Model.UserModel.UNITID">
+            <summary>
+            Desc:机构编码
+            Default:
+            Nullable:True
+            </summary>           
+        </member>
+        <member name="P:Strong.Model.UserModel.roleName">
+            <summary>
+            角色名称
+            </summary>
+        </member>
         <member name="T:Strong.Model.Dtos.WeatherForecast">
             <summary>
             天气预报DTO1

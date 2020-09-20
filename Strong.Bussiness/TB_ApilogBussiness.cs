@@ -19,6 +19,13 @@ namespace Strong.Bussiness
             this._dal = dal;
             base.BaseDal = dal;
         }
+
+
+     
+
+
+  
  
-	}
+
+    }
 }

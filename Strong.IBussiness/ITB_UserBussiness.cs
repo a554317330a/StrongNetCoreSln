@@ -1,15 +1,28 @@
-﻿using  Strong.Entities.DBModel;
- using  Strong.IBussiness;
+﻿using Strong.Common.Account;
+using Strong.Entities;
+using Strong.Entities.DBModel;
+using Strong.Model;
 using System;
 using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
+
 namespace Strong.IBussiness
 {
-	public interface ITB_UserBussiness : IBaseBussiness<TB_User>
-	{
-		//当前类已经继承了增、删、查、改的方法
-		//这里面写的代码不会给覆盖,如果要重新生成请删除 ITB_UserBussiness.cs
+    public interface ITB_UserBussiness : IBaseBussiness<TB_User>
+    {
+        Task<TokenModelJwt> GetUser(string name, string pwd);
+
+        UserModel GetUserByToken(string token);
+
+        bool GetUserPagePower(UserModel usermodel, string page);
+
+        string getWhere(string name, string IDENTITY);
+
+        List<TB_User> getbyredis();
+ 
 
 
-		  List<TB_User> getbyredis();
-	}
+
+    }
 }

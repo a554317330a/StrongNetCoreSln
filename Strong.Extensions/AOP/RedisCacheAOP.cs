@@ -1,6 +1,6 @@
 ﻿using Castle.DynamicProxy;
+using Strong.Common.AttributeExt;
 using Strong.Common.Redis;
-using Strong.Extensions.AttributeExt;
 using System;
 using System.Collections.Generic;
 using System.Linq;
