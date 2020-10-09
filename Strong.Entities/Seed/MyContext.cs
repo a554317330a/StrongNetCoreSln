@@ -1,12 +1,14 @@
-﻿using SqlSugar;
+﻿using log4net;
+using SqlSugar;
 using Strong.Common;
 using System;
+using System.Threading.Tasks;
 
 namespace Strong.Entities.Seed
 {
     public class MyContext
     {
-
+        private static readonly ILog log = LogManager.GetLogger(typeof(MyContext));
         private static string _connectionString = Appsettings.app(new string[] { "BaseConfig", "SqlConStr" });
         private static DbType _dbType;
         private SqlSugarClient _db;
@@ -26,9 +28,38 @@ namespace Strong.Entities.Seed
                 DbType = DbType.SqlServer,//数据库类型
                 IsAutoCloseConnection = true,//自动关闭数据库
                 IsShardSameThread = false,//启用异步多线程
-                InitKeyType = InitKeyType.Attribute,//属性为准
+                InitKeyType = InitKeyType.Attribute//属性为准
+                ,
+                AopEvents = new AopEvents
+                {
+                    OnLogExecuting = (sql, p) =>
+                    {
+                        if (Appsettings.app(new string[] { "AppSettings", "SqlAOP", "Enabled" }).ObjToBool())
+                        {
+                            Parallel.For(0, 1, e =>
+                            {
 
+                                log.Info($"SQL：{ GetParas(p)}【SQL语句】：{sql}");
+                            });
+                        }
+                    }
+                },
+                MoreSettings = new ConnMoreSettings()
+                {
+                    IsWithNoLockQuery = true,//查询锁
+                    IsAutoRemoveDataCache = true//删除数据库缓存
+                }
             });
+        }
+        private static string GetParas(SugarParameter[] pars)
+        {
+            string key = "【SQL参数】：";
+            foreach (var param in pars)
+            {
+                key += $"{param.ParameterName}:{param.Value}\n";
+            }
+
+            return key;
         }
 
         #region 实例方法

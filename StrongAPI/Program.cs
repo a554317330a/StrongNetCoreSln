@@ -51,7 +51,7 @@ namespace Strong.API
                 var path = Path.Combine(Directory.GetCurrentDirectory(), "Log4net.config");
                 builder.AddLog4Net(path);
             })
-            .UseUrls("http://*:8818");
+            .UseUrls("http://*:3889");
         });
 
     }

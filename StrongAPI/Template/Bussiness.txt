@@ -10,9 +10,9 @@ namespace @Model.ClassNamespace
 
 	//这里面写的代码不会给覆盖,如果要重新生成请删除 @(Model.Name)Bussiness.cs
 
-
-	I@(Model.Name)Repository  _dal;
-        public @(Model.Name)Bussiness(I@(Model.Name)Repository dal)
+		IBaseRepository<@(Model.Name)> _dal;
+ 
+        public @(Model.Name)Bussiness(IBaseRepository<@(Model.Name)> dal)
         {
             this._dal = dal;
             base.BaseDal = dal;

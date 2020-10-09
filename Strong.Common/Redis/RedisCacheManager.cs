@@ -125,9 +125,9 @@ namespace Strong.Common.Redis
         /// <param name="key"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public bool SetValue(string key, byte[] value)
+        public bool SetValue(string key, byte[] value, TimeSpan cacheTime)
         {
-            return redisConnection.Set(key, value, TimeSpan.FromSeconds(120));
+            return redisConnection.Set(key, value, cacheTime);
         }
 
     }

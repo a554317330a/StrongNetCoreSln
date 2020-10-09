@@ -14,20 +14,20 @@ namespace Strong.IRepository.Base
  
 
         #region 添加数据
-        int Add(TEntity model);
-        int Add(List<TEntity> model);
-        int Add(TEntity entity, Expression<Func<TEntity, object>> insertColumns = null);
+        //int Add(TEntity model);
+        //int Add(List<TEntity> model);
+        //int Add(TEntity entity, Expression<Func<TEntity, object>> insertColumns = null);
         Task<int> AddAsync(TEntity model);
         Task<int> AddAsync(TEntity entity, Expression<Func<TEntity, object>> insertColumns = null);
         Task<int> AddAsync(List<TEntity> entity);
         #endregion
 
         #region 删除数据
-        bool Delete(int id);
-        bool Delete(TEntity entity);
-        bool Delete(int[] ids);
-        bool Delete(List<TEntity> entitys);
-        bool Delete(Expression<Func<TEntity, bool>> whereExpression);
+        //bool Delete(int id);
+        //bool Delete(TEntity entity);
+        //bool Delete(int[] ids);
+        //bool Delete(List<TEntity> entitys);
+        //bool Delete(Expression<Func<TEntity, bool>> whereExpression);
         Task<bool> DeleteAsync(int id);
         Task<bool> DeleteAsync(TEntity entity);
         Task<bool> DeleteAsync(int[] ids);
@@ -36,10 +36,10 @@ namespace Strong.IRepository.Base
         #endregion
 
         #region 修改数据
-        bool Update(TEntity entity);
-        bool Update(TEntity entity, params string[] columns);
-        bool Update(List<TEntity> entitys);
-        bool Update(List<TEntity> entitys, params string[] columns);
+        //bool Update(TEntity entity);
+        //bool Update(TEntity entity, params string[] columns);
+        //bool Update(List<TEntity> entitys);
+        //bool Update(List<TEntity> entitys, params string[] columns);
         Task<bool> UpdateAsync(TEntity entity);
         Task<bool> UpdateAsync(TEntity entity, params string[] columns);
         Task<bool> UpdateAsync(List<TEntity> entitys);
@@ -49,74 +49,91 @@ namespace Strong.IRepository.Base
         #region 查询
 
         #region 同步
-        /// <summary>
-        /// 按条件查询单条
-        /// </summary>
-        /// <param name="whereExpression"></param>
-        /// <returns></returns>
-        TEntity FindWhere(Expression<Func<TEntity, bool>> whereExpression);
+        ///// <summary>
+        ///// 按条件查询单条
+        ///// </summary>
+        ///// <param name="whereExpression"></param>
+        ///// <returns></returns>
+        //TEntity FindWhere(Expression<Func<TEntity, bool>> whereExpression);
 
-        /// <summary>
-        /// 按主键查找
-        /// </summary>
-        /// <param name="objId"></param>
-        /// <param name="blnUseCache"></param>
-        /// <returns></returns>
-        TEntity Query(int id);
-        /// <summary>
-        /// 查询所有数据
-        /// </summary>
-        /// <returns></returns>
-        List<TEntity> Query();
-        /// <summary>
-        /// 按条件查询多条
-        /// </summary>
-        /// <param name="whereExpression"></param>
-        /// <returns></returns>
-        List<TEntity> Query(Expression<Func<TEntity, bool>> whereExpression);
-
-
-        /// <summary>
-        /// 按条件查询多条
-        /// </summary>
-        /// <param name="whereExpression">查询条件</param>
-        /// <param name="strOrderByFileds">排序条件</param>
-        /// <returns></returns>
-        List<TEntity> Query(Expression<Func<TEntity, bool>> whereExpression, string strOrderByFileds);
-
-        /// <summary>
-        /// 按条件查询多条
-        /// </summary>
-        /// <param name="whereExpression"></param>
-        /// <param name="orderByExpression"></param>
-        /// <param name="isAsc"></param>
-        /// <returns></returns>
-        List<TEntity> Query(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression, bool isAsc = true);
+        ///// <summary>
+        ///// 按主键查找
+        ///// </summary>
+        ///// <param name="objId"></param>
+        ///// <param name="blnUseCache"></param>
+        ///// <returns></returns>
+        //TEntity Query(int id);
+        ///// <summary>
+        ///// 查询所有数据
+        ///// </summary>
+        ///// <returns></returns>
+        //List<TEntity> Query();
+        ///// <summary>
+        ///// 按条件查询多条
+        ///// </summary>
+        ///// <param name="whereExpression"></param>
+        ///// <returns></returns>
+        //List<TEntity> Query(Expression<Func<TEntity, bool>> whereExpression);
 
 
-        /// <summary>
-        /// 按条件查询前N条
-        /// </summary>
-        /// <param name="whereExpression"></param>
-        /// <param name="orderByExpression"></param>
-        /// <param name="intTop"></param>
-        /// <param name="isAsc"></param>
-        /// <returns></returns>
-        List<TEntity> Query(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression, int intTop, bool isAsc = true);
 
-        /// <summary>
-        /// 单表分页查询
-        /// </summary>
-        /// <param name="whereExpression"></param>
-        /// <param name="intPageIndex"></param>
-        /// <param name="intPageSize"></param>
-        /// <param name="orderByExpression"></param>
-        /// <param name="intTotalCount"></param>
-        /// <param name="isAsc"></param>
-        /// <returns></returns>
-        List<TEntity> Query(
-          Expression<Func<TEntity, bool>> whereExpression, int intPageIndex, int intPageSize, Expression<Func<TEntity, object>> orderByExpression, ref int intTotalCount, bool isAsc = true);
+        ///// <summary>
+        ///// 按条件查询多条
+        ///// </summary>
+        ///// <param name="whereExpression">查询条件</param>
+        ///// <param name="strOrderByFileds">排序条件</param>
+        ///// <returns></returns>
+        //List<TEntity> Query(Expression<Func<TEntity, bool>> whereExpression, string strOrderByFileds);
 
+        ///// <summary>
+        ///// 按条件查询多条
+        ///// </summary>
+        ///// <param name="whereExpression"></param>
+        ///// <param name="orderByExpression"></param>
+        ///// <param name="isAsc"></param>
+        ///// <returns></returns>
+        //List<TEntity> Query(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression, bool isAsc = true);
+
+
+        ///// <summary>
+        ///// 按条件查询前N条
+        ///// </summary>
+        ///// <param name="whereExpression"></param>
+        ///// <param name="orderByExpression"></param>
+        ///// <param name="intTop"></param>
+        ///// <param name="isAsc"></param>
+        ///// <returns></returns>
+        //List<TEntity> Query(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression, int intTop, bool isAsc = true);
+
+        ///// <summary>
+        ///// 单表分页查询
+        ///// </summary>
+        ///// <param name="whereExpression"></param>
+        ///// <param name="intPageIndex"></param>
+        ///// <param name="intPageSize"></param>
+        ///// <param name="orderByExpression"></param>
+        ///// <param name="intTotalCount"></param>
+        ///// <param name="isAsc"></param>
+        ///// <returns></returns>
+        //List<TEntity> Query(
+        //  Expression<Func<TEntity, bool>> whereExpression, int intPageIndex, int intPageSize, Expression<Func<TEntity, object>> orderByExpression, ref int intTotalCount, bool isAsc = true);
+
+
+
+        ///// <summary>
+        ///// 同步分页条件查询
+        ///// </summary>
+        ///// <param name="where"></param>
+        ///// <param name="intPageIndex"></param>
+        ///// <param name="intPageSize"></param>
+        ///// <param name="orderby"></param>
+        ///// <param name="intTotalCount"></param>
+        ///// <returns></returns>
+        //List<TEntity> Query(
+        //   string where,
+        //   int intPageIndex, int intPageSize,
+        //string orderby,
+        //   ref int intTotalCount);
 
         #endregion
 
@@ -194,6 +211,20 @@ namespace Strong.IRepository.Base
         Task<List<TEntity>> QueryAsync(
          Expression<Func<TEntity, bool>> whereExpression, int intPageIndex, int intPageSize, Expression<Func<TEntity, object>> orderByExpression, bool isAsc = true);
 
+
+        /// <summary>
+        /// 异步分页条件查询
+        /// </summary>
+        /// <param name="where"></param>
+        /// <param name="intPageIndex"></param>
+        /// <param name="intPageSize"></param>
+        /// <param name="orderby"></param>
+        /// <returns></returns>
+         Task<List<TEntity>> QueryAsync(
+           string where,
+           int intPageIndex, int intPageSize,
+        string orderby);
+
         /// <summary>
         /// 按条件返回记录数（异步）
         /// </summary>
@@ -201,10 +232,15 @@ namespace Strong.IRepository.Base
         /// <returns></returns>
         Task<int> GetTotalAsync(Expression<Func<TEntity, bool>> whereExpression);
 
+        Task<int> GetTotalAsync(string where);
+
+
         Task<List<TResult>> QueryMuch<T, T2, T3, TResult>(
           Expression<Func<T, T2, T3, object[]>> joinExpression,
           Expression<Func<T, T2, T3, TResult>> selectExpression,
           Expression<Func<T, T2, T3, bool>> whereLambda = null) where T : class, new();
+
+
 
         #endregion
 
@@ -212,7 +248,7 @@ namespace Strong.IRepository.Base
 
         #region SqlQuery
 
-        DataTable SqlQuery(string sql);
+        //DataTable SqlQuery(string sql);
 
         Task<DataTable> SqlQueryAsync(string sql);
         #endregion

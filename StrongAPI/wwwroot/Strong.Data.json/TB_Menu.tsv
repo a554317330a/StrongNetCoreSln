@@ -16,7 +16,7 @@
     "Mlevel": 2,
     "Sort": "190000",
     "Mvisible": 1,
-    "Ico": "image/left/权限管理.png",
+    "Ico": "images/left/权限管理.png",
     "Mparent": "1"
   },
   {
@@ -26,7 +26,7 @@
     "Mlevel": 3,
     "Sort": "191000",
     "Mvisible": 1,
-    "Ico": "image/left/arrow.png",
+    "Ico": "images/left/arrow.png",
     "Mparent": "2"
   },
   {
@@ -36,7 +36,7 @@
     "Mlevel": 3,
     "Sort": "192000",
     "Mvisible": 1,
-    "Ico": "image/left/arrow.png",
+    "Ico": "images/left/arrow.png",
     "Mparent": "2"
   },
   {

@@ -91,10 +91,10 @@ namespace Strong.Extensions.ServiceExtensions
             /// V1 版本
             /// </summary>
             V1 = 1,
-            /// <summary>
-            /// V2 版本
-            /// </summary>
-            V2 = 2,
+            ///// <summary>
+            ///// V2 版本
+            ///// </summary>
+            //V2 = 2,
         }
     }
 

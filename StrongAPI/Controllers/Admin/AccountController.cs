@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Localization.Internal;
 using Microsoft.Extensions.Options;
@@ -14,13 +15,14 @@ using Strong.Model.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Strong.API.Controllers
 {
     [ApiController]
     [Route("")]
-    [Authorize(Policy = "All")]
     public class AccountController : ControllerBase
     {
         readonly ITB_ApilogBussiness _iTBApilogBussiness;
@@ -29,7 +31,7 @@ namespace Strong.API.Controllers
         readonly IWebHostEnvironment _env;
         readonly IOptions<JsonConfig> _config;
         readonly ITB_UserBussiness _UserBussiness;
-        IRedisCacheManager _redis;
+        readonly IRedisCacheManager _redis;
         public AccountController(IRedisCacheManager redis ,ITB_UserBussiness UserBussiness, IOptions<JsonConfig> config , ITB_MenuBussiness MenuBussiness, ITB_ApilogBussiness _iTBApilogBussiness, IWebHostEnvironment env)
         {
             _redis = redis;
@@ -41,8 +43,6 @@ namespace Strong.API.Controllers
  
         }
 
- 
-
 
         #region 登录而已
 
@@ -52,15 +52,14 @@ namespace Strong.API.Controllers
         /// <param name="username">用户名</param>
         /// <param name="password">密码</param>
         /// <returns></returns>
+        [ClientApi]
         [HttpGet]
-        [AllowAnonymous]
         public async Task<MessageModel<string>> Login(string username, string password, string validatecode, string reid)
-         {
+        {
 
             var res = new MessageModel<string>();
-
             //获取用户信息
-            if (_env.IsDevelopment() || validatecode == "YT9999")
+            if (Convert.ToBoolean(_config.Value.isdebug) || validatecode == "YT9999")
             {
 
                 res.data = $"{{\"access_token\":{_config.Value.defaulttoken}}}";
@@ -74,7 +73,7 @@ namespace Strong.API.Controllers
             {
 
                 var requestid = reid;
-                var values = _redis.GetValue(requestid + "_ValidateCode");
+                var values = _redis.Get<string>(requestid + "_ValidateCode");
                 if (string.IsNullOrWhiteSpace(values))
                 {
                     res.data = "";
@@ -86,8 +85,20 @@ namespace Strong.API.Controllers
 
                 if (values.Equals(validatecode))
                 {
+                    var viewmodel =  await _UserBussiness.GetUser(username, password);
+                    //todo 看不懂异步的打开这些注释，看看
+                    //Console.WriteLine("1");
+                    //var ASD = await _UserBussiness.GetUser(username, password);
+                    //Task.Run(() => {
+                    //    for (int i =5; i < 6; i++)
+                    //    {
+                    //        Thread.Sleep(10000);
+                    //        Console.WriteLine("-11");
+                    //    }
+                    //});
 
-                    var viewmodel = await _UserBussiness.GetUser(username, password);
+                    //var  viewmodel= await ASD;
+                    //Console.WriteLine("-1");
                     if (viewmodel != null)
                     {
 
@@ -128,15 +139,16 @@ namespace Strong.API.Controllers
                     res.code = System.Net.HttpStatusCode.OK;
                     res.success = false;
                 }
+
             }
 
             return res;
         }
 
-            #endregion
+        #endregion
 
         [HttpGet]
-
+        [Authorize(Policy = "All")]
         public async Task<MessageModel<string>> GetMenu()
         {
 
@@ -235,24 +247,16 @@ namespace Strong.API.Controllers
             }
         }
 
+ 
 
 
+        /// <summary>
+        /// 例子，使用缓存和事务的切面
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet]
         [ClientApi]
-        public async Task<string> Get(int id = 1)
-        {
-            //IAdvertisementServices advertisementServices = new AdvertisementServices();//需要引用两个命名空间Blog.Core.IServices;Blog.Core.Services;
-
-            //return await _iTBApilogBussiness.QueryAsync(d => d.Logid == id);
-
-            var list = _UserBussiness.Query();
-            var liststr = Newtonsoft.Json.JsonConvert.SerializeObject(list);
-            return liststr;
-        }
-
-
-
-        [HttpGet]
 
         public async Task<string> Getbredis(int id = 1)
         {

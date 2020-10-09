@@ -66,69 +66,69 @@
             操作是否成功
             </summary>
         </member>
-        <member name="P:Strong.Model.UserModel.LOGINNAME">
+        <member name="P:Strong.Model.ViewModel.UserModel.LOGINNAME">
             <summary>
             Desc:登陆名
             Default:
             Nullable:False
             </summary>           
         </member>
-        <member name="P:Strong.Model.UserModel.REALNAME">
+        <member name="P:Strong.Model.ViewModel.UserModel.REALNAME">
             <summary>
             Desc:真实名称
             Default:
             Nullable:False
             </summary>           
         </member>
-        <member name="P:Strong.Model.UserModel.UNIT">
+        <member name="P:Strong.Model.ViewModel.UserModel.UNIT">
             <summary>
             Desc:单位
             Default:
             Nullable:True
             </summary>           
         </member>
-        <member name="P:Strong.Model.UserModel.DUTY">
+        <member name="P:Strong.Model.ViewModel.UserModel.DUTY">
             <summary>
             Desc:职务
             Default:
             Nullable:True
             </summary>           
         </member>
-        <member name="P:Strong.Model.UserModel.ISSYSADMIN">
+        <member name="P:Strong.Model.ViewModel.UserModel.ISSYSADMIN">
             <summary>
             Desc:是否超级管理员
             Default:
             Nullable:True
             </summary>           
         </member>
-        <member name="P:Strong.Model.UserModel.UNITID">
+        <member name="P:Strong.Model.ViewModel.UserModel.UNITID">
             <summary>
             Desc:机构编码
             Default:
             Nullable:True
             </summary>           
         </member>
-        <member name="P:Strong.Model.UserModel.roleName">
+        <member name="P:Strong.Model.ViewModel.UserModel.roleName">
             <summary>
             角色名称
             </summary>
         </member>
-        <member name="T:Strong.Model.Dtos.WeatherForecast">
+        <member name="T:Strong.Model.ViewModel.WeatherForecast">
             <summary>
             天气预报DTO1
             </summary>
         </member>
-        <member name="P:Strong.Model.Dtos.WeatherForecast.Date">
+        <member name="P:Strong.Model.ViewModel.WeatherForecast.Date">
             <summary>
             日期
             </summary>
         </member>
-        <member name="P:Strong.Model.Dtos.WeatherForecast.Temperature">
+        <member name="P:Strong.Model.ViewModel.WeatherForecast.Temperature">
             <summary>
             温度
             </summary>
         </member>
-        <member name="P:Strong.Model.Dtos.WeatherForecast.Summary">
+        <member name="P:Strong.Model.ViewModel.WeatherForecast.Summary">
             <summary>
             总结
             </summary>

@@ -14,7 +14,9 @@ using Strong.Common.Redis;
 using Strong.Entities.Seed;
 using Strong.Extensions.Middlewares;
 using Strong.Extensions.ServiceExtensions;
+using Strong.IBussiness;
 using Strong.Model.Common;
+using Strong.Tasks;
 using System.Text;
 
 
@@ -60,15 +62,16 @@ namespace Strong.API
             services.AddSingleton<IRedisCacheManager, RedisCacheManager>();//单例Redis缓存,必须单例的哦，不然会爆--https://www.cnblogs.com/JulianHuang/p/11541658.html
 
             services.Configure<JsonConfig>(opts => Configuration.GetSection("JsonConfig").Bind(opts));
-
-
+            //仓储
+            services.AddSqlsugarSetup();
             //种子数据
             services.AddDbSetup();
             //跨域
             services.AddCorsSetup();
             //添加Swagger
             services.AddSwaggerSetup();
-
+            //任务调度
+            services.AddJobSetup();
             services.AddHttpContextSetup();
             //授权对象
             services.AddAuthorizationSetup();
@@ -80,8 +83,9 @@ namespace Strong.API
             {
                 //全局控制器方法过滤
                 o.Filters.Add(typeof(ActionFilter));
-                // 全局异常过滤
-                //o.Filters.Add(new ExceptionFilter());
+               // 全局异常过滤
+                o.Filters.Add(typeof(ExceptionFilter));
+                o.Filters.Add(typeof(ResultFilter));
                 // 全局路由前缀，统一修改路由
                 o.Conventions.Insert(0, new GlobalRoutePrefixFilter(new RouteAttribute(RoutePrefix.Name)));
             })
@@ -111,7 +115,7 @@ namespace Strong.API
             /// 如果不需要，尽量留空，不要修改
             /// 除非一定要在所有的 api 前统一加上特定前缀
             /// </summary>
-            public const string Name = "[controller] /[action]";
+            public const string Name = "[controller]/[action]";
         }
         /// <summary>
         /// 用于配置整个HTTP请求的流程
@@ -119,7 +123,7 @@ namespace Strong.API
         /// <param name="app"></param>
         /// <param name="env"></param>
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, MyContext myContext, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, MyContext myContext, ITasksQzBussiness tasksQzServices, ISchedulerCenter schedulerCenter, IHostApplicationLifetime lifetime, IWebHostEnvironment env)
         {
 
 
@@ -165,8 +169,12 @@ namespace Strong.API
             {
                 endpoints.MapControllers();
             });
-
+            //种子数据
             app.UseSeedDataMildd(myContext, Env.WebRootPath);
+            // 开启QuartzNetJob调度服务
+            app.UseQuartzJobMildd(tasksQzServices, schedulerCenter);
+            //服务注册
+            //app.UseConsulMildd(Configuration, lifetime);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

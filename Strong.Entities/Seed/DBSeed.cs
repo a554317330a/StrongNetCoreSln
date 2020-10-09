@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.WebSockets;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,7 +31,6 @@ namespace Strong.Entities.Seed
                 }
                 SeedDataFolder = Path.Combine(WebRootPath, SeedDataFolder);
 
-                 
                 //创建一个数据库
                 myContext.Db.DbMaintenance.CreateDatabase(Appsettings.app(new string[] { "BaseConfig", "DataBaseName" }), null);
 
@@ -49,7 +49,7 @@ namespace Strong.Entities.Seed
                         //生成对应层类文件
                         msg += CreateMethods.GenerationLogic(t.Name, bllusing, "Bussiness", "Bussiness", "Bussiness");
                         msg += CreateMethods.GenerationLogic(t.Name, ibllusing, "IBussiness", "IBussiness", "Bussiness");
-                        msg += CreateMethods.GenerationLogic(t.Name, repositoryusing, "Repository", "Repository", "Repository");
+                        //msg += CreateMethods.GenerationLogic(t.Name, repositoryusing, "Repository", "Repository", "Repository");
                         msg += CreateMethods.GenerationLogic(t.Name, irepositoryusing, "IRepository", "IRepository", "Repository");
                         Console.WriteLine(msg );
                     }
@@ -113,6 +113,21 @@ namespace Strong.Entities.Seed
                 else
                 {
                     Console.WriteLine("Table:TB_User_Role already exists...");
+                }
+                #endregion
+
+                #region TaskJob
+
+
+              var s=   JsonHelper.GetJSON<TasksQz>(new TasksQz { BeginTime = DateTime.Now, EndTime = DateTime.Now.AddYears(5) });
+                if (!await myContext.Db.Queryable<TasksQz>().AnyAsync())
+                {
+                    myContext.GetEntityDB<TasksQz>().InsertRange(JsonHelper.ParseFormByJson<List<TasksQz>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "TasksQz"), Encoding.UTF8)));
+                    Console.WriteLine("Table:TasksQz Data created success!");
+                }
+                else
+                {
+                    Console.WriteLine("Table:TasksQz already exists...");
                 }
                 #endregion
 

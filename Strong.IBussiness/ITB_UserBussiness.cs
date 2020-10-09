@@ -2,6 +2,7 @@
 using Strong.Entities;
 using Strong.Entities.DBModel;
 using Strong.Model;
+using Strong.Model.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,13 +14,13 @@ namespace Strong.IBussiness
     {
         Task<TokenModelJwt> GetUser(string name, string pwd);
 
-        UserModel GetUserByToken(string token);
+        Task<UserModel> GetUserByToken(string token);
 
         bool GetUserPagePower(UserModel usermodel, string page);
 
         string getWhere(string name, string IDENTITY);
 
-        List<TB_User> getbyredis();
+        Task<List<TB_User>> getbyredis();
  
 
 

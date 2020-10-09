@@ -15,7 +15,7 @@ namespace Strong.Extensions.ServiceExtensions
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
             services.AddScoped<DBSeed>();
-            services.AddScoped<MyContext>();
+            services.AddScoped<MyContext>();//这个Context是提供给创建数据的时候用的。
         }
     }
 }

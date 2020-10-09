@@ -2,6 +2,8 @@
 using Strong.Common;
 using Strong.IBussiness;
 using Strong.Model;
+using Strong.Model.ViewModel;
+using System.Threading.Tasks;
 
 namespace Strong.Extensions.Account
 {
@@ -27,12 +29,12 @@ namespace Strong.Extensions.Account
             return ip;
         }
 
-        public UserModel UserModel
+        public   UserModel UserModel
         {
             get
             {
                 var token = _accessor.HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-                var usermodel = _UserBussiness.GetUserByToken(token);
+                var usermodel =   _UserBussiness.GetUserByToken(token).Result;
                 return usermodel;
             }
         }

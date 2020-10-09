@@ -8,6 +8,7 @@ using Strong.IBussiness;
 using Strong.IRepository;
 using Strong.IRepository.Base;
 using Strong.Model;
+using Strong.Model.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -39,10 +40,14 @@ namespace Strong.Bussiness
             return await _dal.GetUser(name, DESEncrypt.Encrypt(pwd));
         }
 
-        [Caching]
-        public List<TB_User> getbyredis()
+        [UseCache]
+        [UseTran]
+        public async Task<List<TB_User>> getbyredis()
         {
-            return _dal.Query();
+
+            var a = await _dal.AddAsync(new TB_User { Loginname = "123", Pwd = "123", Realname = "123" ,Issysadmin="1"});
+            await _dal.DeleteAsync(a);
+            return await _dal.QueryAsync();
         }
 
         /// <summary>
@@ -50,23 +55,23 @@ namespace Strong.Bussiness
         /// </summary>
         /// <param name="token"></param>
         /// <returns></returns>
-        public UserModel GetUserByToken(string token)
+        public async Task<UserModel> GetUserByToken(string token)
         {
             try
             {
 
                 var tokenModel = JWTHelper.SerializeJwt(token);
-                var userentity = _dal.Query(tokenModel.Uid);
+                var userentity = await _dal.QueryAsync(tokenModel.Uid);
 
                 var usermodel = new UserModel { LOGINNAME = userentity.Loginname, DUTY = userentity.Duty, ISSYSADMIN = userentity.Issysadmin, REALNAME = userentity.Realname, UNIT = userentity.Unit, UNITID = userentity.Unitid };
-                TB_User_Role usertorole = _userroledal.FindWhere(u => u.Userid == userentity.Userid);
-                var role = _roledal.FindWhere(o => o.Roleid.Equals(usertorole.Roleid));
+                TB_User_Role usertorole = await _userroledal.FindWhereAsync(u => u.Userid == userentity.Userid);
+                var role = await _roledal.FindWhereAsync(o => o.Roleid.Equals(usertorole.Roleid));
                 usermodel.roleName = role.RoleIdentity;
                 if (usertorole != null)
                 {
 
                     string sqlWher = $"MFlag in (select MFlag from TB_Role_Menu where roleid={usertorole.Roleid}) and Mvisible=1 order by SORT";
-                    var menuList = _menudal.SqlQuery(sqlWher);
+                    var menuList = await _menudal.SqlQueryAsync(sqlWher);
                     Dictionary<string, string> valuePairs = new Dictionary<string, string>();
                     foreach (DataRow item in menuList.Rows)
                     {

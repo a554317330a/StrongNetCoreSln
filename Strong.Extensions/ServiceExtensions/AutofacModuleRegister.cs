@@ -35,12 +35,16 @@ namespace Strong.Extensions.ServiceExtensions
                 builder.RegisterType<RedisCacheAOP>();
                 cacheType.Add(typeof(RedisCacheAOP));
             }
-            //if (Appsettings.app(new string[] { "AppSettings", "TranAOP", "Enabled" }).ObjToBool())
-            //{
-            //    builder.RegisterType<BlogTranAOP>();
-            //    cacheType.Add(typeof(BlogTranAOP));
-            //}
-             builder.RegisterGeneric(typeof(BaseRepository<>)).As(typeof(IBaseRepository<>)).InstancePerDependency();//注册仓储
+ 
+
+            if (Appsettings.app(new string[] { "AppSettings", "TranAOP", "Enabled" }).ObjToBool())
+            {
+                builder.RegisterType<TranAOP>();
+                cacheType.Add(typeof(TranAOP));
+            }
+
+
+            builder.RegisterGeneric(typeof(BaseRepository<>)).As(typeof(IBaseRepository<>)).InstancePerDependency();//注册仓储
             try
             {
                 // 获取 Service.dll 程序集服务，并注册

@@ -6,6 +6,7 @@ using Strong.Common.Account;
 using Strong.Entities;
 using Strong.Entities.DBModel;
 using Strong.IRepository;
+using Strong.IRepository.UnitOfWork;
 using Strong.Repository.Base;
 
 namespace Strong.Repository
@@ -15,7 +16,7 @@ namespace Strong.Repository
     /// </summary>	
     public class TB_UserRepository : BaseRepository<TB_User>, ITB_UserRepository
     {
-        public TB_UserRepository() : base()
+        public TB_UserRepository(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
         }
 
@@ -27,9 +28,10 @@ namespace Strong.Repository
         /// <returns>TokenModel</returns>
         public async Task<TokenModelJwt> GetUser(string name, string pwd)
         {
-            var usermodel = this.EntityDB.GetSingle(o => o.Loginname.Equals(name) && o.Pwd.Equals(pwd));
+          
+            var usermodel = db.GetSimpleClient().GetSingle<TB_User>(o => o.Loginname.Equals(name) && o.Pwd.Equals(pwd));
 
-            var viewmodel = await Db.Queryable<TB_Role, TB_User_Role, TB_User>((ro, ur, us) => new object[]
+            var viewmodel = await db.Queryable<TB_Role, TB_User_Role, TB_User>((ro, ur, us) => new object[]
             {
                 JoinType.Inner, ur.Roleid == ro.Roleid && ur.Userid == usermodel.Userid,
                 JoinType.Inner, us.Userid == ur.Userid && us.Userid == usermodel.Userid
@@ -54,8 +56,6 @@ namespace Strong.Repository
                 model.Uid = viewmodel[0].Uid;
                 model.NickName = viewmodel[0].NickName;
             }
-
-
             return model;
         }
 

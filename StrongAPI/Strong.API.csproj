@@ -22,6 +22,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\Admin\AdminRoleController.cs" />
+    <Compile Remove="Controllers\Admin\AdminUserController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Template\Bussiness.txt" />
     <None Remove="Template\IBussiness.txt" />
     <None Remove="Template\IRepository.txt" />
@@ -44,11 +49,6 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Template\Repository.txt">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -62,6 +62,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.8" />
     <PackageReference Include="Microsoft.DotNet.PlatformAbstractions" Version="3.1.6" />
     <PackageReference Include="Microsoft.Extensions.Logging.Log4Net.AspNetCore" Version="3.1.0" />
+    <PackageReference Include="Nancy" Version="2.0.0" />
     <PackageReference Include="sqlSugarCore" Version="5.0.0.15" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.5.1" />
     <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="5.1.2" />

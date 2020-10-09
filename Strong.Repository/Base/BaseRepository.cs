@@ -1,6 +1,7 @@
 ﻿
 using SqlSugar;
 using Strong.IRepository.Base;
+using Strong.IRepository.UnitOfWork;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -12,47 +13,35 @@ namespace Strong.Repository.Base
 {
     public  class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class, new()
     {
-        private DbContext context;
-        private SqlSugarClient db;
-        private SimpleClient<TEntity> entityDB;
+        public ISqlSugarClient db;
+        
+        private readonly IUnitOfWork _unitOfWork;
 
-        public DbContext Context
+        private SqlSugarClient _dbBase;
+
+       
+
+        // 构造函数，通过 unitofwork，来控制sqlsugar 实例
+        public BaseRepository(IUnitOfWork unitOfWork)
         {
-            get { return context; }
-            set { context = value; }
-        }
-        internal SqlSugarClient Db
-        {
-            get { return db; }
-            private set { db = value; }
-        }
-        internal SimpleClient<TEntity> EntityDB
-        {
-            get { return entityDB; }
-            private set { entityDB = value; }
-        }
-        public BaseRepository()
-        {
-            DbContext.Init(BaseDBConfig.ConnectionString);
-            context = DbContext.GetDbContext();
-            db = context.Db;
-            entityDB = context.GetEntityDB<TEntity>(db);
+            _unitOfWork = unitOfWork;
+            db = unitOfWork.GetDbClient();
         }
 
-        public int Add(TEntity model)
-        {
-            return db.Insertable<TEntity>(model).ExecuteReturnIdentity();
-        }
+        //public int Add(TEntity model)
+        //{
+        //    return db.Insertable<TEntity>(model).ExecuteReturnIdentity();
+        //}
 
-        public int Add(List<TEntity> model)
-        {
-            return db.Insertable<TEntity>(model).ExecuteReturnIdentity();
-        }
+        //public int Add(List<TEntity> model)
+        //{
+        //    return db.Insertable<TEntity>(model).ExecuteReturnIdentity();
+        //}
 
-        public int Add(TEntity entity, Expression<Func<TEntity, object>> insertColumns = null)
-        {
-            return db.Insertable<TEntity>(entity).InsertColumns(insertColumns).ExecuteReturnIdentity();
-        }
+        //public int Add(TEntity entity, Expression<Func<TEntity, object>> insertColumns = null)
+        //{
+        //    return db.Insertable<TEntity>(entity).InsertColumns(insertColumns).ExecuteReturnIdentity();
+        //}
 
         public async Task<int> AddAsync(TEntity model)
         {
@@ -72,31 +61,31 @@ namespace Strong.Repository.Base
             return i;
         }
 
-        public bool Delete(int id)
-        {
-            return db.Deleteable<TEntity>(id).ExecuteCommand() > 0;
+        //public bool Delete(int id)
+        //{
+        //    return db.Deleteable<TEntity>(id).ExecuteCommand() > 0;
 
-        }
+        //}
 
-        public bool Delete(TEntity entity)
-        {
-            return db.Deleteable<TEntity>(entity).ExecuteCommand() > 0;
-        }
+        //public bool Delete(TEntity entity)
+        //{
+        //    return db.Deleteable<TEntity>(entity).ExecuteCommand() > 0;
+        //}
 
-        public bool Delete(int[] ids)
-        {
-            return db.Deleteable<TEntity>().In(ids).ExecuteCommand() > 0;
-        }
+        //public bool Delete(int[] ids)
+        //{
+        //    return db.Deleteable<TEntity>().In(ids).ExecuteCommand() > 0;
+        //}
 
-        public bool Delete(List<TEntity> entitys)
-        {
-            return db.Deleteable<TEntity>(entitys).ExecuteCommand() > 0;
-        }
+        //public bool Delete(List<TEntity> entitys)
+        //{
+        //    return db.Deleteable<TEntity>(entitys).ExecuteCommand() > 0;
+        //}
 
-        public bool Delete(Expression<Func<TEntity, bool>> whereExpression)
-        {
-            return db.Deleteable<TEntity>().Where(whereExpression).ExecuteCommand() > 0;
-        }
+        //public bool Delete(Expression<Func<TEntity, bool>> whereExpression)
+        //{
+        //    return db.Deleteable<TEntity>().Where(whereExpression).ExecuteCommand() > 0;
+        //}
 
         public async Task<bool> DeleteAsync(int id)
         {
@@ -127,25 +116,25 @@ namespace Strong.Repository.Base
             return i > 0;
         }
 
-        public bool Update(TEntity entity)
-        {
-            return db.Updateable(entity).ExecuteCommand() > 0;
-        }
+        //public bool Update(TEntity entity)
+        //{
+        //    return db.Updateable(entity).ExecuteCommand() > 0;
+        //}
 
-        public bool Update(TEntity entity, params string[] columns)
-        {
-            return db.Updateable(entity).UpdateColumns(columns).ExecuteCommand() > 0;
-        }
+        //public bool Update(TEntity entity, params string[] columns)
+        //{
+        //    return db.Updateable(entity).UpdateColumns(columns).ExecuteCommand() > 0;
+        //}
 
-        public bool Update(List<TEntity> entitys)
-        {
-            return db.Updateable(entitys).ExecuteCommand() > 0;
-        }
+        //public bool Update(List<TEntity> entitys)
+        //{
+        //    return db.Updateable(entitys).ExecuteCommand() > 0;
+        //}
 
-        public bool Update(List<TEntity> entitys, params string[] columns)
-        {
-            return db.Updateable(entitys).UpdateColumns(columns).ExecuteCommand() > 0;
-        }
+        //public bool Update(List<TEntity> entitys, params string[] columns)
+        //{
+        //    return db.Updateable(entitys).UpdateColumns(columns).ExecuteCommand() > 0;
+        //}
 
         public async Task<bool> UpdateAsync(TEntity entity)
         {
@@ -169,63 +158,85 @@ namespace Strong.Repository.Base
         }
         #region 查询
 
+        #region 同步
 
-        public TEntity FindWhere(Expression<Func<TEntity, bool>> whereExpression)
-        {
-            return db.Queryable<TEntity>().WhereIF(whereExpression != null, whereExpression).First();
-        }
+       
+        //public TEntity FindWhere(Expression<Func<TEntity, bool>> whereExpression)
+        //{
+        //    return db.Queryable<TEntity>().WhereIF(whereExpression != null, whereExpression).First();
+        //}
 
-        public TEntity Query(int id)
-        {
+        //public TEntity Query(int id)
+        //{
 
-            return entityDB.GetById(id);
-        }
+        //    return db.GetSimpleClient().GetById<TEntity>(id);
+        //}
 
-        public List<TEntity> Query()
-        {
-            return entityDB.GetList();
-        }
+        //public List<TEntity> Query()
+        //{
+        //    return db.Queryable<TEntity>().ToList();
+        //}
 
-        public List<TEntity> Query(Expression<Func<TEntity, bool>> whereExpression)
-        {
-            return entityDB.GetList(whereExpression);
-        }
+        //public List<TEntity> Query(Expression<Func<TEntity, bool>> whereExpression)
+        //{
+        //    return db.Queryable<TEntity>().Where(whereExpression).ToList();
+        //}
 
-        public List<TEntity> Query(Expression<Func<TEntity, bool>> whereExpression, string strOrderByFileds)
-        {
-            return db.Queryable<TEntity>().OrderByIF(!string.IsNullOrEmpty(strOrderByFileds), strOrderByFileds).WhereIF(whereExpression != null, whereExpression).ToList();
-        }
+        //public List<TEntity> Query(Expression<Func<TEntity, bool>> whereExpression, string strOrderByFileds)
+        //{
+        //    return db.Queryable<TEntity>().OrderByIF(!string.IsNullOrEmpty(strOrderByFileds), strOrderByFileds).WhereIF(whereExpression != null, whereExpression).ToList();
+        //}
 
-        public List<TEntity> Query(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression, bool isAsc = true)
-        {
-            return db.Queryable<TEntity>().OrderByIF(orderByExpression != null, orderByExpression, isAsc ? OrderByType.Asc : OrderByType.Desc).WhereIF(whereExpression != null, whereExpression).ToList();
-        }
+        //public List<TEntity> Query(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression, bool isAsc = true)
+        //{
+        //    return db.Queryable<TEntity>().OrderByIF(orderByExpression != null, orderByExpression, isAsc ? OrderByType.Asc : OrderByType.Desc).WhereIF(whereExpression != null, whereExpression).ToList();
+        //}
 
-        public List<TEntity> Query(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression, int intTop, bool isAsc = true)
-        {
+        //public List<TEntity> Query(Expression<Func<TEntity, bool>> whereExpression, Expression<Func<TEntity, object>> orderByExpression, int intTop, bool isAsc = true)
+        //{
 
-            return db.Queryable<TEntity>().OrderByIF(orderByExpression != null, orderByExpression, isAsc ? OrderByType.Asc : OrderByType.Desc).WhereIF(whereExpression != null, whereExpression).Take(intTop).ToList();
+        //    return db.Queryable<TEntity>().OrderByIF(orderByExpression != null, orderByExpression, isAsc ? OrderByType.Asc : OrderByType.Desc).WhereIF(whereExpression != null, whereExpression).Take(intTop).ToList();
 
-        }
+        //}
 
-        public List<TEntity> Query(
-            Expression<Func<TEntity, bool>> whereExpression,
-            int intPageIndex, int intPageSize,
-            Expression<Func<TEntity, object>> orderByExpression,
-            ref int intTotalCount,
-            bool isAsc = true)
-        {
+        //public List<TEntity> Query(
+        //    Expression<Func<TEntity, bool>> whereExpression,
+        //    int intPageIndex, int intPageSize,
+        //    Expression<Func<TEntity, object>> orderByExpression,
+        //    ref int intTotalCount,
+        //    bool isAsc = true)
+        //{
 
-            return db.Queryable<TEntity>().
-                OrderByIF(orderByExpression != null, orderByExpression, isAsc ? OrderByType.Asc : OrderByType.Desc).
-                WhereIF(whereExpression != null, whereExpression).
-                ToPageList(intPageIndex, intPageSize, ref intTotalCount);
+        //    return db.Queryable<TEntity>().
+        //        OrderByIF(orderByExpression != null, orderByExpression, isAsc ? OrderByType.Asc : OrderByType.Desc).
+        //        WhereIF(whereExpression != null, whereExpression).
+        //        ToPageList(intPageIndex, intPageSize, ref intTotalCount);
 
-        }
-        public DataTable SqlQuery(string sql)
-        {
-            return db.Ado.GetDataTable(sql);
-        }
+        //}
+
+        //public List<TEntity> Query(
+        //   string where,
+        //   int intPageIndex, int intPageSize,
+        //string orderby,
+        //   ref int intTotalCount )
+        //{
+
+        //    return db.Queryable<TEntity>().
+        //        OrderByIF(orderby != null, orderby).
+        //        WhereIF(where != null, where).
+        //        ToPageList(intPageIndex, intPageSize, ref intTotalCount);
+
+        //}
+
+
+        //public DataTable SqlQuery(string sql)
+        //{
+        //    return db.Ado.GetDataTable(sql);
+        //}
+        #endregion
+
+        #region 异步
+
 
         public async Task<TEntity> FindWhereAsync(Expression<Func<TEntity, bool>> whereExpression)
         {
@@ -234,7 +245,7 @@ namespace Strong.Repository.Base
 
         public async Task<TEntity> QueryAsync(int id)
         {
-            return await Task.Run(() => entityDB.GetById(id));
+            return await Task.Run(() => db.GetSimpleClient().GetById<TEntity>(id));
         }
 
         public async Task<List<TEntity>> QueryAsync()
@@ -318,20 +329,38 @@ namespace Strong.Repository.Base
                  ToPageListAsync(intPageIndex, intPageSize);
         }
 
-        public async Task<int> GetTotalAsync(Expression<Func<TEntity, bool>> whereExpression)
+
+        public  async Task<List<TEntity>> QueryAsync(
+           string where,
+           int intPageIndex, int intPageSize,
+        string orderby )
         {
-            return await Task.Run(() => entityDB.Count(whereExpression));
+
+            return await  db.Queryable<TEntity>().
+                OrderByIF(orderby != null, orderby).
+                WhereIF(where != null, where).
+                ToPageListAsync(intPageIndex, intPageSize);
+
         }
 
 
+        public async Task<int> GetTotalAsync(Expression<Func<TEntity, bool>> whereExpression)
+        {
+            return await Task.Run(() => db.GetSimpleClient().Count(whereExpression));
+        }
+
+        public async Task<int> GetTotalAsync(string where)
+        { 
+            return await Task.Run(() => db.Queryable<TEntity>().WhereIF(string.IsNullOrEmpty(where),where).Count());
+        }
 
         public async Task<DataTable> SqlQueryAsync(string sql)
         {
             return await db.Ado.GetDataTableAsync(sql);
         }
 
-      
 
+        #endregion
 
         #endregion
     }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Strong.Model
+namespace Strong.Model.ViewModel
 {
    public class UserModel
     {

@@ -12,6 +12,19 @@
             <param name="password">密码</param>
             <returns></returns>
         </member>
+        <member name="M:Strong.API.Controllers.AccountController.Getbredis(System.Int32)">
+            <summary>
+            例子，使用缓存和事务的切面
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Strong.API.Controllers.CommonController.ValidateCode">
+            <summary>
+            返回验证码
+            </summary>
+            <returns>VilidateCodeModel</returns>
+        </member>
         <member name="T:Strong.API.Controllers.WeatherForecastController">
             <summary>
             测试接口
@@ -40,12 +53,6 @@
             获取数据
             </summary>
             <returns></returns>
-        </member>
-        <member name="M:Strong.API.Filter.ActionFilter.OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
-            <summary>
-            方法前记录日志
-            </summary>
-            <param name="context"></param>
         </member>
         <member name="F:Strong.API.Filter.GlobalRoutePrefixFilter._centralPrefix">
             <summary>
@@ -104,7 +111,7 @@
             除非一定要在所有的 api 前统一加上特定前缀
             </summary>
         </member>
-        <member name="M:Strong.API.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Strong.Entities.Seed.MyContext,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+        <member name="M:Strong.API.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Strong.Entities.Seed.MyContext,Strong.IBussiness.ITasksQzBussiness,Strong.Tasks.ISchedulerCenter,Microsoft.Extensions.Hosting.IHostApplicationLifetime,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
             <summary>
             用于配置整个HTTP请求的流程
             </summary>

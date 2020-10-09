@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Strong.Model.Dtos;
+using Strong.Model.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;

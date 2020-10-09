@@ -15,7 +15,7 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Production"
       },
-      "applicationUrl": "http://localhost:8818",
+      "applicationUrl": "http://localhost:3889",
       "sslPort": 0
     }
   }

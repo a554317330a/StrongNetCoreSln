@@ -28,7 +28,7 @@ namespace Strong.Extensions.AOP
                 return;
             }
             //对当前方法的特性验证
-            var qCachingAttribute = method.GetCustomAttributes(true).FirstOrDefault(x => x.GetType() == typeof(CachingAttribute)) as CachingAttribute;
+            var qCachingAttribute = method.GetCustomAttributes(true).FirstOrDefault(x => x.GetType() == typeof(UseCacheAttribute)) as UseCacheAttribute;
 
             if (qCachingAttribute != null)
             {

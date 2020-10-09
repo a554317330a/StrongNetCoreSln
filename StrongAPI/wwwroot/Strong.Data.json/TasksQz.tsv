@@ -1,0 +1,15 @@
+﻿[
+  {
+
+    "Name": "用户列表",
+    "AssemblyName": "Strong.Tasks",
+    "ClassName": "UserJob",
+    "RunTimes": 0,
+    "BeginTime": "\/Date(1602225724316+0800)\/",
+    "EndTime": "\/Date(1759992124317+0800)\/",
+    "IntervalSecond": "10",
+    "IsStart": 1
+  }
+]
+
+ 

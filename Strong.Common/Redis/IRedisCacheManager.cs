@@ -21,6 +21,6 @@ namespace Strong.Common.Redis
 
 
 
-        bool SetValue(string key, byte[] value);
+        bool SetValue(string key, byte[] value, TimeSpan cacheTime);
     }
 }

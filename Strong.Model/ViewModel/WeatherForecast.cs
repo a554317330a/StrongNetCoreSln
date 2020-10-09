@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Strong.Model.Dtos
+namespace Strong.Model.ViewModel
 {
     /// <summary>
     /// 天气预报DTO1
