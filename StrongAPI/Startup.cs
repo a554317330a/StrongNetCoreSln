@@ -54,7 +54,9 @@ namespace Strong.API
         /// <param name="services"></param>
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {
+        {   
+
+            
                //测试
             //��ȡ�����ļ�
             services.AddSingleton(new Appsettings(Configuration)); 
