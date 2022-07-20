@@ -23,7 +23,7 @@ using System.Text;
 namespace Strong.API
 {
     /// <summary>
-    /// Èë¿ÚÅäÖÃ
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     public class Startup
     {
@@ -32,12 +32,12 @@ namespace Strong.API
         private IServiceCollection _services;
         
         /// <summary>
-        /// APIÃû³Æ
+        /// APIï¿½ï¿½ï¿½ï¿½
         /// </summary>
         public string ApiName { get; set; } = "Strong.API";
 
         /// <summary>
-        /// ¹¹Ôìº¯Êý
+        /// ï¿½ï¿½ï¿½ìº¯ï¿½ï¿½
         /// </summary>
         /// <param name="configuration"></param>
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
@@ -49,54 +49,54 @@ namespace Strong.API
 
 
         /// <summary>
-        /// ÓÃÓÚ×¢²áservices·þÎñ£¨µÚÈý·½£¬EF£¬identityµÈ£©µ½ÈÝÆ÷ÖÐ£¬Ê¹Configure¿ÉÒÔÊ¹ÓÃÕâÐ©·þÎñ
+        /// ï¿½ï¿½ï¿½ï¿½×¢ï¿½ï¿½servicesï¿½ï¿½ï¿½ñ£¨µï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½EFï¿½ï¿½identityï¿½È£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½Ê¹Configureï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½Ð©ï¿½ï¿½ï¿½ï¿½
         /// </summary>
         /// <param name="services"></param>
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
-            //¶ÁÈ¡ÅäÖÃÎÄ¼þ
+               //æµ‹è¯•
+            //ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½
             services.AddSingleton(new Appsettings(Configuration)); 
 
-            services.AddSingleton<IRedisCacheManager, RedisCacheManager>();//µ¥ÀýRedis»º´æ,±ØÐëµ¥ÀýµÄÅ¶£¬²»È»»á±¬--https://www.cnblogs.com/JulianHuang/p/11541658.html
+            services.AddSingleton<IRedisCacheManager, RedisCacheManager>();//ï¿½ï¿½ï¿½ï¿½Redisï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ëµ¥ï¿½ï¿½ï¿½ï¿½Å¶ï¿½ï¿½ï¿½ï¿½È»ï¿½á±¬--https://www.cnblogs.com/JulianHuang/p/11541658.html
 
             services.Configure<JsonConfig>(opts => Configuration.GetSection("JsonConfig").Bind(opts));
-            //²Ö´¢
+            //ï¿½Ö´ï¿½
             services.AddSqlsugarSetup();
-            //ÖÖ×ÓÊý¾Ý
+            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             services.AddDbSetup();
-            //¿çÓò
+            //ï¿½ï¿½ï¿½ï¿½
             services.AddCorsSetup();
-            //Ìí¼ÓSwagger
+            //ï¿½ï¿½ï¿½ï¿½Swagger
             services.AddSwaggerSetup();
-            //ÈÎÎñµ÷¶È
+            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             services.AddJobSetup();
             services.AddHttpContextSetup();
-            //ÊÚÈ¨¶ÔÏó
+            //ï¿½ï¿½È¨ï¿½ï¿½ï¿½ï¿½
             services.AddAuthorizationSetup();
-            // Ìí¼ÓJwtBearer·þÎñ
+            // ï¿½ï¿½ï¿½ï¿½JwtBearerï¿½ï¿½ï¿½ï¿½
             services.AddAuthentication_JWTSetup();
 
-            //¿ØÖÆÆ÷¹ýÂË
+            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             services.AddControllers(o =>
             {
-                //È«¾Ö¿ØÖÆÆ÷·½·¨¹ýÂË
+                //È«ï¿½Ö¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 o.Filters.Add(typeof(ActionFilter));
-               // È«¾ÖÒì³£¹ýÂË
+               // È«ï¿½ï¿½ï¿½ì³£ï¿½ï¿½ï¿½ï¿½
                 o.Filters.Add(typeof(ExceptionFilter));
                 o.Filters.Add(typeof(ResultFilter));
-                // È«¾ÖÂ·ÓÉÇ°×º£¬Í³Ò»ÐÞ¸ÄÂ·ÓÉ
+                // È«ï¿½ï¿½Â·ï¿½ï¿½Ç°×ºï¿½ï¿½Í³Ò»ï¿½Þ¸ï¿½Â·ï¿½ï¿½
                 o.Conventions.Insert(0, new GlobalRoutePrefixFilter(new RouteAttribute(RoutePrefix.Name)));
             })
-            //È«¾ÖÅäÖÃJsonÐòÁÐ»¯´¦Àí
+            //È«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Jsonï¿½ï¿½ï¿½Ð»ï¿½ï¿½ï¿½ï¿½ï¿½
             .AddNewtonsoftJson(options =>
             {
-                //ºöÂÔÑ­»·ÒýÓÃ
+                //ï¿½ï¿½ï¿½ï¿½Ñ­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                //²»Ê¹ÓÃÍÕ·åÑùÊ½µÄkey
+                //ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½Õ·ï¿½ï¿½ï¿½Ê½ï¿½ï¿½key
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
-                //ÉèÖÃÊ±¼ä¸ñÊ½
+                //ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Ê½
                 options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss";
             });
 
@@ -106,19 +106,19 @@ namespace Strong.API
         }
 
         /// <summary>
-        /// Â·ÓÉ±äÁ¿Ç°×ºÅäÖÃ
+        /// Â·ï¿½É±ï¿½ï¿½ï¿½Ç°×ºï¿½ï¿½ï¿½ï¿½
         /// </summary>
         public static class RoutePrefix
         {
             /// <summary>
-            /// Ç°×ºÃû
-            /// Èç¹û²»ÐèÒª£¬¾¡Á¿Áô¿Õ£¬²»ÒªÐÞ¸Ä
-            /// ³ý·ÇÒ»¶¨ÒªÔÚËùÓÐµÄ api Ç°Í³Ò»¼ÓÉÏÌØ¶¨Ç°×º
+            /// Ç°×ºï¿½ï¿½
+            /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ£ï¿½ï¿½ï¿½Òªï¿½Þ¸ï¿½
+            /// ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½ api Ç°Í³Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Ø¶ï¿½Ç°×º
             /// </summary>
             public const string Name = "[controller]/[action]";
         }
         /// <summary>
-        /// ÓÃÓÚÅäÖÃÕû¸öHTTPÇëÇóµÄÁ÷³Ì
+        /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½HTTPï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         /// </summary>
         /// <param name="app"></param>
         /// <param name="env"></param>
@@ -127,9 +127,9 @@ namespace Strong.API
         {
 
 
-            // ²é¿´×¢ÈëµÄËùÓÐ·þÎñ
+            // ï¿½é¿´×¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð·ï¿½ï¿½ï¿½
             app.UseAllServicesMildd(_services);
-            #region ÅÐ¶Ï»·¾³
+            #region ï¿½Ð¶Ï»ï¿½ï¿½ï¿½
 
             if (env.IsDevelopment())
             {
@@ -138,42 +138,42 @@ namespace Strong.API
             else
             {
                 app.UseExceptionHandler("/Error");
-                app.UseHsts();//Ê¹ÓÃHTTPÑÏ¸ñ°²È«´«Êä
+                app.UseHsts();//Ê¹ï¿½ï¿½HTTPï¿½Ï¸ï¿½È«ï¿½ï¿½ï¿½ï¿½
             }
             #endregion
 
-            // ·â×°Swagger
+            // ï¿½ï¿½×°Swagger
             app.UseSwaggerMildd();
 
-            // CORS¿çÓò
+            // CORSï¿½ï¿½ï¿½ï¿½
             app.UseCors(Appsettings.app(new string[] { "Startup", "Cors", "PolicyName" }));
 
-            //ÓÃ»§¹¹½¨HTTPSÍ¨µÀ£¨½«HTTPÇëÇóÖØ¶¨Ïòµ½HTTPSÖÐ¼ä¼þ£©
+            //ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½HTTPSÍ¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½HTTPï¿½ï¿½ï¿½ï¿½ï¿½Ø¶ï¿½ï¿½ï¿½HTTPSï¿½Ð¼ï¿½ï¿½ï¿½ï¿½
             //app.UseHttpsRedirection();
 
-            // Ê¹ÓÃ¾²Ì¬ÎÄ¼þ
+            // Ê¹ï¿½Ã¾ï¿½Ì¬ï¿½Ä¼ï¿½
             app.UseStaticFiles();
-            // Ê¹ÓÃcookie
+            // Ê¹ï¿½ï¿½cookie
             //app.UseCookiePolicy();
-            // ·µ»Ø´íÎóÂë
+            // ï¿½ï¿½ï¿½Ø´ï¿½ï¿½ï¿½ï¿½ï¿½
             app.UseStatusCodePages();
             // Routing
             app.UseRouting();
 
-            //¿ªÆôÈÏÖ¤
+            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¤
             app.UseAuthentication();
-            //¿ªÆôÊÚÈ¨
+            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¨
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
-            //ÖÖ×ÓÊý¾Ý
+            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             app.UseSeedDataMildd(myContext, Env.WebRootPath);
-            // ¿ªÆôQuartzNetJobµ÷¶È·þÎñ
+            // ï¿½ï¿½ï¿½ï¿½QuartzNetJobï¿½ï¿½ï¿½È·ï¿½ï¿½ï¿½
             app.UseQuartzJobMildd(tasksQzServices, schedulerCenter);
-            //·þÎñ×¢²á
+            //ï¿½ï¿½ï¿½ï¿½×¢ï¿½ï¿½
             //app.UseConsulMildd(Configuration, lifetime);
         }
 
